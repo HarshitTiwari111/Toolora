@@ -1,0 +1,21 @@
+# dependencies / builds
+node_modules/
+.next/
+dist/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# secrets — kabhi commit nahi
+.env
+.env.*
+!.env.example
+
+# local tooling / OS
+.claude/
+.vscode/
+.DS_Store
+Thumbs.db
+npm-debug.log*
+*.log
+coverage/
