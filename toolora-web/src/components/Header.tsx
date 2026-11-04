@@ -2,6 +2,8 @@ import Link from "next/link";
 import { ChevronDown, Menu, Search, ShieldCheck } from "lucide-react";
 import { mainNav } from "@/lib/site";
 import Logo from "./Logo";
+import CategoryIcon from "./CategoryIcon";
+import { tone } from "@/lib/theme";
 
 // Reference jaisa dark header: dropdown menus (CSS hover/focus, JS ke bina) + mobile <details> menu.
 export default function Header() {
@@ -13,7 +15,8 @@ export default function Header() {
       <div className="bg-accent text-white">
         <p className="mx-auto flex max-w-[1600px] items-center justify-center gap-2 px-4 py-2 text-center text-xs font-medium sm:text-sm">
           <ShieldCheck className="hidden h-4 w-4 sm:block" />
-          Every price and feature on Toolora links to its source — with the date we checked it.
+          <span className="sm:hidden">Every fact sourced &amp; dated.</span>
+          <span className="hidden sm:inline">Every price and feature on Toolora links to its source — with the date we checked it.</span>
           <Link href="/how-we-review/" className="rounded-md bg-label px-2 py-0.5 font-semibold text-ink">
             How we review
           </Link>
@@ -25,37 +28,44 @@ export default function Header() {
           <Logo tone="light" />
 
           <nav aria-label="Main" className="hidden lg:block">
-            <ul className="flex items-center gap-0.5 text-[15px] font-medium">
+            <ul className="flex items-center gap-0.5 whitespace-nowrap text-sm font-medium xl:text-[15px]">
               {mainNav.map((item) =>
                 item.menu ? (
                   <li key={item.href} className="group relative">
                     <Link
                       href={item.href}
-                      className="flex items-center gap-1 rounded-lg px-3 py-2 text-white/85 transition hover:bg-white/10 hover:text-white"
+                      className="flex items-center gap-1 whitespace-nowrap rounded-lg px-2.5 py-2 text-white/85 transition hover:bg-white/10 hover:text-white xl:px-3"
                       aria-haspopup="true"
                     >
                       {item.label} <ChevronDown className="h-3.5 w-3.5 opacity-70" />
                     </Link>
                     <div className="invisible absolute left-0 top-full z-50 pt-2 opacity-0 transition group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
-                      <ul className="grid w-[30rem] grid-cols-2 gap-1 rounded-2xl border border-line bg-surface p-3 text-foreground shadow-2xl">
-                        {item.menu.map((m, i) => (
-                          <li key={m.href} className={i === 0 ? "col-span-2" : ""}>
-                            <Link
-                              href={m.href}
-                              className={`block rounded-lg px-3 py-2 text-sm transition hover:bg-surface-2 ${
-                                i === 0 ? "font-semibold text-accent" : ""
-                              }`}
-                            >
-                              {m.label}
-                            </Link>
-                          </li>
-                        ))}
+                      <ul className="grid w-[34rem] grid-cols-2 gap-1 rounded-2xl border border-line bg-surface p-3 text-foreground shadow-2xl">
+                        {item.menu.slice(1).map((m) => {
+                          const slug = m.href.split("/").filter(Boolean).pop() ?? "";
+                          const t = tone(slug);
+                          return (
+                            <li key={m.href}>
+                              <Link href={m.href} className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-medium transition hover:bg-surface-2">
+                                <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md" style={{ background: t.soft, color: t.ink }}>
+                                  <CategoryIcon slug={slug} className="h-4 w-4" />
+                                </span>
+                                {m.label}
+                              </Link>
+                            </li>
+                          );
+                        })}
+                        <li className="col-span-2 mt-1 border-t border-line pt-2">
+                          <Link href={item.menu[0].href} className="block rounded-lg px-2.5 py-2 text-sm font-bold text-accent hover:bg-surface-2">
+                            {item.menu[0].label} →
+                          </Link>
+                        </li>
                       </ul>
                     </div>
                   </li>
                 ) : (
                   <li key={item.href}>
-                    <Link href={item.href} className="block rounded-lg px-3 py-2 text-white/85 transition hover:bg-white/10 hover:text-white">
+                    <Link href={item.href} className="block whitespace-nowrap rounded-lg px-2.5 py-2 text-white/85 transition hover:bg-white/10 hover:text-white xl:px-3">
                       {item.label}
                     </Link>
                   </li>
@@ -70,7 +80,7 @@ export default function Header() {
             </Link>
             <Link
               href="/ai-tools/"
-              className="hidden rounded-lg border border-white/80 px-4 py-2 text-sm font-bold uppercase tracking-wide transition hover:bg-white hover:text-ink sm:block"
+              className="hidden whitespace-nowrap rounded-lg border border-white/80 px-4 py-2 text-sm font-bold uppercase tracking-wide transition hover:bg-white hover:text-ink sm:block lg:hidden xl:block"
             >
               Explore tools
             </Link>

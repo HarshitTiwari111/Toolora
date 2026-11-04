@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ArticleSummary } from "@/lib/content";
 import { articleCategory, articleTypeLabels, fmtDate, initials } from "@/lib/labels";
-import CategoryIcon from "../CategoryIcon";
+import IllustratedCover from "./IllustratedCover";
 
 // Cover image ya (image na ho to) category icon wala gradient placeholder.
 export function Cover({
@@ -30,11 +30,7 @@ export function Cover({
           className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
         />
       ) : (
-        <div aria-hidden className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#25204f] via-[#1b1e2d] to-[#3a2a7a]">
-          <span className="rounded-2xl bg-white/10 p-4 text-white/80 ring-1 ring-white/15">
-            <CategoryIcon slug={cat?.slug ?? ""} className="h-9 w-9" />
-          </span>
-        </div>
+        <IllustratedCover category={cat?.slug} label={cat?.name.replace(/^AI /, "")} className="transition duration-500 group-hover:scale-[1.03]" />
       )}
       {cat && (
         <span className="absolute left-3 top-3 rounded-md bg-ink/85 px-2 py-1 text-[11px] font-bold uppercase tracking-wider text-white backdrop-blur">
