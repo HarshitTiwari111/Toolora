@@ -9,11 +9,13 @@ export function Cover({
   className = "",
   sizes = "(min-width: 1024px) 33vw, 100vw",
   priority = false,
+  big = false,
 }: {
   article: ArticleSummary;
   className?: string;
   sizes?: string;
   priority?: boolean;
+  big?: boolean;
 }) {
   const cat = articleCategory(a);
   return (
@@ -30,7 +32,7 @@ export function Cover({
           className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
         />
       ) : (
-        <IllustratedCover category={cat?.slug} label={cat?.name.replace(/^AI /, "")} className="transition duration-500 group-hover:scale-[1.03]" />
+        <IllustratedCover category={cat?.slug} label={cat?.name.replace(/^AI /, "")} big={big} className="transition duration-500 group-hover:scale-[1.03]" />
       )}
       {cat && (
         <span className="absolute left-3 top-3 rounded-md bg-ink/85 px-2 py-1 text-[11px] font-bold uppercase tracking-wider text-white backdrop-blur">

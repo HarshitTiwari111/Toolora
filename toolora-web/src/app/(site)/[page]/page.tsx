@@ -29,7 +29,7 @@ export default async function Page({ params }: Props) {
 
   return (
     <>
-      <PageHeader crumbs={[{ label: p.title }]} eyebrow="Toolora.ai" title={p.title} description={content?.description} />
+      <PageHeader crumbs={[{ label: p.title }]} eyebrow="Toolora.ai" title={p.title} description={content?.description} icon="trust" />
       <div className={`${container} py-12`}>
         {content ? (
           <div className="article-body">{content.body}</div>

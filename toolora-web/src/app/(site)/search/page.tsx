@@ -23,6 +23,7 @@ export default async function SearchPage({ searchParams }: Props) {
         eyebrow="Search"
         title={hasQuery ? `Results for “${q}”` : "Search Toolora.ai"}
         description={hasQuery ? `${total} result${total === 1 ? "" : "s"}` : "Find AI tools, SaaS products, reviews and comparisons."}
+        icon="search"
       >
         <div className="mt-6">
           <SearchForm defaultValue={q} autoFocus={!hasQuery} />

@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import ArticleCard, { FeaturedCard } from "@/components/site/ArticleCard";
 import JsonLd from "@/components/site/JsonLd";
-import PageHeader, { EmptyState, container } from "@/components/site/PageHeader";
+import PageHeader, { EmptyState, ExploreInstead, container } from "@/components/site/PageHeader";
 import { listArticles } from "@/lib/content";
 import { articleCategory, articleTypeLabels } from "@/lib/labels";
 import { breadcrumbJsonLd, itemListJsonLd, pageMetadata } from "@/lib/seo";
@@ -59,6 +59,7 @@ export default async function BlogPage({ searchParams }: Props) {
         eyebrow="The blog"
         title="Latest guides & reviews"
         description="Practical, fact-checked articles on choosing and using AI tools and SaaS."
+        icon="blog"
       />
       <div className={`${container} py-10`}>
         <nav aria-label="Filter articles" className="mb-8 space-y-3">
@@ -102,7 +103,11 @@ export default async function BlogPage({ searchParams }: Props) {
             )}
           </>
         ) : (
-          <EmptyState title="No articles here yet" text="Try another topic. New articles are published after editorial review." />
+          all.length === 0 ? (
+            <ExploreInstead title="The first articles are on their way" text="Reviews and guides appear here once an editor has approved them. Explore the categories meanwhile." />
+          ) : (
+            <EmptyState title="No articles here yet" text="Try another topic. New articles are published after editorial review." />
+          )
         )}
       </div>
     </>

@@ -20,6 +20,16 @@ const tones: Record<string, Tone> = {
   finance: { from: "#15803d", to: "#ca8a04", ink: "#166534", soft: "#e9f5ec" },
   security: { from: "#334155", to: "#4f46e5", ink: "#334155", soft: "#eef0f4" },
   design: { from: "#c026d3", to: "#f43f5e", ink: "#a21caf", soft: "#faeafc" },
+  // Sections
+  reviews: { from: "#f59e0b", to: "#ea580c", ink: "#b45309", soft: "#fdf5e6" },
+  compare: { from: "#2563eb", to: "#7c3aed", ink: "#1d4ed8", soft: "#ebf2fe" },
+  alternatives: { from: "#0d9488", to: "#2563eb", ink: "#0f766e", soft: "#e6f6f4" },
+  guides: { from: "#16a34a", to: "#0d9488", ink: "#15803d", soft: "#e9f7ee" },
+  blog: { from: "#4f46e5", to: "#c026d3", ink: "#4338ca", soft: "#eef0ff" },
+  "ai-tools": { from: "#6366f1", to: "#8b5cf6", ink: "#4338ca", soft: "#eef0ff" },
+  saas: { from: "#0d9488", to: "#65a30d", ink: "#0f766e", soft: "#e6f6f4" },
+  search: { from: "#334155", to: "#6366f1", ink: "#334155", soft: "#eef0f4" },
+  trust: { from: "#334155", to: "#4f46e5", ink: "#334155", soft: "#eef0f4" },
 };
 
 const fallback: Tone = { from: "#312e81", to: "#7c3aed", ink: "#4338ca", soft: "#eef0ff" };

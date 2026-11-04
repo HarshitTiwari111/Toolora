@@ -3,11 +3,13 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import CategoryIcon from "../CategoryIcon";
+import { tone } from "@/lib/theme";
 
 export type Goal = {
   key: string;
   label: string;
-  emoji: string;
+  category: string;
   summary: string;
   hub: { href: string; label: string };
   guides: { href: string; title: string; meta: string }[];
@@ -26,6 +28,7 @@ export default function GoalPicker({ goals }: { goals: Goal[] }) {
       <div role="tablist" aria-label="Choose a goal" className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {goals.map((x) => {
           const on = x.key === g.key;
+          const t = tone(x.category);
           return (
             <button
               key={x.key}
@@ -34,11 +37,17 @@ export default function GoalPicker({ goals }: { goals: Goal[] }) {
               aria-selected={on}
               aria-controls="goal-panel"
               onClick={() => setActive(x.key)}
-              className={`flex items-center gap-2.5 rounded-xl border px-4 py-3 text-left text-sm font-semibold transition ${
-                on ? "border-ink bg-ink text-white shadow-card" : "border-line bg-surface hover:border-ink/40"
+              className={`group flex items-center gap-3 rounded-xl border px-3.5 py-3 text-left text-sm font-semibold transition ${
+                on ? "border-ink bg-ink text-white shadow-card" : "border-line bg-surface hover:-translate-y-0.5 hover:border-ink/30 hover:shadow-card"
               }`}
             >
-              <span aria-hidden className="text-lg">{x.emoji}</span>
+              <span
+                aria-hidden
+                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition"
+                style={on ? { background: `linear-gradient(135deg, ${t.from}, ${t.to})`, color: "#fff" } : { background: t.soft, color: t.ink }}
+              >
+                <CategoryIcon slug={x.category} className="h-[18px] w-[18px]" />
+              </span>
               {x.label}
             </button>
           );

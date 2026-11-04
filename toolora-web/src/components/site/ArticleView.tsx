@@ -6,7 +6,8 @@ import { areaBase, articleCategory, categoryName, fmtDate, platformName, pricing
 import Breadcrumbs, { type Crumb } from "../Breadcrumbs";
 import ArticleCard, { Cover } from "./ArticleCard";
 import BrandMark from "./BrandMark";
-import { container } from "./PageHeader";
+// Article ka header, cover aur body ek hi width me aligned (reference jaisa).
+const wrap = "mx-auto w-full max-w-[1240px] px-4 sm:px-6 lg:px-10";
 
 const profileUrl = (p: PublicProduct) => p.url ?? `${areaBase(p.productType)}/${p.slug}/`;
 
@@ -110,8 +111,9 @@ export default function ArticleView({
 
   return (
     <article>
-      <header className="border-b border-line bg-surface">
-        <div className="mx-auto max-w-4xl px-4 pb-10 pt-8 sm:px-6">
+      <header className="bg-surface">
+        <div className={`${wrap} pb-10 pt-8`}>
+          <div className="max-w-4xl">
           <Breadcrumbs items={crumbs} />
           <p className="mb-3 text-xs font-bold uppercase tracking-widest text-accent">
             {cat ? cat.name : sectionLabel}
@@ -147,17 +149,19 @@ export default function ArticleView({
               {handsOn ? "Hands-on tested" : "Research-based overview"}
             </li>
           </ul>
+          </div>
         </div>
       </header>
 
-      {a.coverImageUrl && (
-        <figure className="mx-auto mt-8 max-w-5xl px-4 sm:px-6">
-          <Cover article={a} className="aspect-[16/8] rounded-2xl" sizes="(min-width: 1024px) 1024px, 100vw" priority />
-          {a.coverImageCredit && <figcaption className="mt-2 text-right text-xs text-muted">{a.coverImageCredit}</figcaption>}
+      {/* Cover: photo ho to photo, warna category ka illustrated cover */}
+      <div className="bg-gradient-to-b from-surface from-50% to-transparent to-50%">
+        <figure className={wrap}>
+          <Cover article={a} className="aspect-[16/9] rounded-3xl shadow-card sm:aspect-[21/9]" sizes="(min-width: 1240px) 1200px, 100vw" priority big />
+          {a.coverImageUrl && a.coverImageCredit && <figcaption className="mt-2 text-right text-xs text-muted">{a.coverImageCredit}</figcaption>}
         </figure>
-      )}
+      </div>
 
-      <div className={`${container} grid gap-10 py-10 lg:grid-cols-[minmax(0,1fr)_320px]`}>
+      <div className={`${wrap} grid gap-12 py-12 lg:grid-cols-[minmax(0,1fr)_300px]`}>
         <div className="min-w-0">
           {a.disclosure && (
             <p className="mb-8 flex max-w-[75ch] gap-3 rounded-2xl border border-line bg-surface p-4 text-sm text-muted">
@@ -279,7 +283,7 @@ export default function ArticleView({
 
       {related.length > 0 && (
         <section className="border-t border-line bg-surface py-14">
-          <div className={container}>
+          <div className={wrap}>
             <h2 className="mb-8 font-serif text-3xl font-bold tracking-tight">Keep reading</h2>
             <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {related.map((r) => (

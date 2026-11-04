@@ -11,8 +11,6 @@ import { findProduct, getProductOr404, listArticles, listProducts, type ProductD
 import ArticleCard from "./site/ArticleCard";
 import JsonLd from "./site/JsonLd";
 import { breadcrumbJsonLd, itemListJsonLd, pageMetadata, softwareJsonLd } from "@/lib/seo";
-import { tone } from "@/lib/theme";
-import CategoryIcon from "./CategoryIcon";
 import {
   articleTypeLabels, areaBase, categoryName, factLabel, fmtDate, platformLabels, platformName, pricingLabels,
 } from "@/lib/labels";
@@ -110,7 +108,13 @@ export async function DirectoryIndex({ area, filters: raw }: { area: Area; filte
             ? "Browse AI tools by category or filter by pricing, platform and use case. Every profile shows when its facts were last verified."
             : "Business software by function, with a look at their AI features and dated, sourced facts."
         }
-      />
+        icon={area === "ai" ? "ai-tools" : "saas"}
+      >
+        <p className="mt-5 text-sm text-ink-muted">
+          <span className="font-bold text-white">{items.length}</span> tool{items.length === 1 ? "" : "s"} ·{" "}
+          <span className="font-bold text-white">{a.categories.length}</span> categories
+        </p>
+      </PageHeader>
       <div className={`${container} py-12`}>
         <h2 className="mb-5 font-serif text-3xl font-bold tracking-tight">Browse by category</h2>
         <CategoryGrid base={areaBase(area)} categories={a.categories} />
@@ -146,28 +150,18 @@ async function CategoryHub({ area, slug, filters: raw }: { area: Area; slug: str
           itemListJsonLd(`${cat.name} tools`, items.map((p) => ({ name: p.brandName, path: p.url }))),
         ]}
       />
-      <div className="relative overflow-hidden bg-ink text-white">
-        <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full blur-[100px]" style={{ background: tone(slug).from, opacity: 0.45 }} />
-        <div className={`${container} relative flex flex-wrap items-center justify-between gap-8 pb-12 pt-8`}>
-          <div className="max-w-3xl">
-            <nav aria-label="Breadcrumb" className="mb-6 text-sm text-ink-muted">
-              <Link href="/" className="hover:text-white">Home</Link> <span aria-hidden>/</span>{" "}
-              <Link href={`${areaBase(area)}/`} className="hover:text-white">{a.label}</Link> <span aria-hidden>/</span>{" "}
-              <span aria-current="page" className="text-white">{cat.name}</span>
-            </nav>
-            <p className="mb-2 text-xs font-bold uppercase tracking-widest text-label">Category</p>
-            <h1 className="font-serif text-4xl font-semibold tracking-tight sm:text-5xl">{`Best ${cat.name} tools`}</h1>
-            <p className="mt-4 text-lg text-ink-muted">{`${cat.description}, compared on pricing model, platforms and verified features — with the date each fact was checked.`}</p>
-            <p className="mt-5 text-sm text-ink-muted">
-              <span className="font-bold text-white">{items.length}</span> tool{items.length === 1 ? "" : "s"} ·{" "}
-              <span className="font-bold text-white">{articles.length}</span> article{articles.length === 1 ? "" : "s"}
-            </p>
-          </div>
-          <span className="hidden h-36 w-36 items-center justify-center rounded-3xl ring-1 ring-white/20 md:inline-flex" style={{ background: `linear-gradient(135deg, ${tone(slug).from}, ${tone(slug).to})` }}>
-            <CategoryIcon slug={slug} className="h-16 w-16 text-white" />
-          </span>
-        </div>
-      </div>
+      <PageHeader
+        crumbs={[{ label: a.label, href: `${areaBase(area)}/` }, { label: cat.name }]}
+        eyebrow="Category"
+        title={`Best ${cat.name} tools`}
+        description={`${cat.description}, compared on pricing model, platforms and verified features — with the date each fact was checked.`}
+        icon={slug}
+      >
+        <p className="mt-5 text-sm text-ink-muted">
+          <span className="font-bold text-white">{items.length}</span> tool{items.length === 1 ? "" : "s"} ·{" "}
+          <span className="font-bold text-white">{articles.length}</span> article{articles.length === 1 ? "" : "s"}
+        </p>
+      </PageHeader>
       <div className={`${container} py-12`}>
         <Filters basePath={`${areaBase(area)}/${slug}/`} filters={filters} useCaseOptions={useCaseOptions} />
         {items.length ? (

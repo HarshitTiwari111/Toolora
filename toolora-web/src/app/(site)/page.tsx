@@ -36,15 +36,15 @@ const tiles = [
   { href: "/saas/project-management/", label: "Project Management", icon: "project-management" },
 ];
 
-const GOALS: { key: string; label: string; emoji: string; cat: string; summary: string }[] = [
-  { key: "write", label: "Write content", emoji: "✍️", cat: "writing", summary: "Draft blogs, ads and emails faster — without losing your voice." },
-  { key: "video", label: "Make videos", emoji: "🎬", cat: "video", summary: "Create, edit and repurpose video with AI, from scripts to captions." },
-  { key: "images", label: "Create images", emoji: "🎨", cat: "image-generation", summary: "Generate visuals, product shots and brand assets with AI." },
-  { key: "automate", label: "Automate work", emoji: "⚙️", cat: "automation", summary: "Connect your apps and let AI agents handle repetitive workflows." },
-  { key: "market", label: "Market & sell", emoji: "📈", cat: "marketing", summary: "Find leads, personalise outreach and run campaigns with AI help." },
-  { key: "support", label: "Support customers", emoji: "💬", cat: "chatbots", summary: "Answer customers 24/7 with AI chat that hands off to humans." },
-  { key: "code", label: "Code faster", emoji: "💻", cat: "coding", summary: "Pair-program with AI assistants and ship features in less time." },
-  { key: "meetings", label: "Run meetings", emoji: "🗓️", cat: "productivity", summary: "Record, summarise and act on meetings without taking notes." },
+const GOALS: { key: string; label: string; cat: string; summary: string }[] = [
+  { key: "write", label: "Write content", cat: "writing", summary: "Draft blogs, ads and emails faster — without losing your voice." },
+  { key: "video", label: "Make videos", cat: "video", summary: "Create, edit and repurpose video with AI, from scripts to captions." },
+  { key: "images", label: "Create images", cat: "image-generation", summary: "Generate visuals, product shots and brand assets with AI." },
+  { key: "automate", label: "Automate work", cat: "automation", summary: "Connect your apps and let AI agents handle repetitive workflows." },
+  { key: "market", label: "Market & sell", cat: "marketing", summary: "Find leads, personalise outreach and run campaigns with AI help." },
+  { key: "support", label: "Support customers", cat: "chatbots", summary: "Answer customers 24/7 with AI chat that hands off to humans." },
+  { key: "code", label: "Code faster", cat: "coding", summary: "Pair-program with AI assistants and ship features in less time." },
+  { key: "meetings", label: "Run meetings", cat: "productivity", summary: "Record, summarise and act on meetings without taking notes." },
 ];
 
 const METHOD = [
@@ -96,7 +96,7 @@ function buildGoals(articles: ArticleSummary[], aiProducts: PublicProduct[]): Go
     return {
       key: g.key,
       label: g.label,
-      emoji: g.emoji,
+      category: g.cat,
       summary: g.summary,
       hub: { href: `/ai-tools/${g.cat}/`, label: `All ${cat.name} tools` },
       guides: articles
@@ -161,9 +161,8 @@ export default async function Home() {
                     href={t.href}
                     className="group flex h-full flex-col items-center justify-center gap-4 rounded-2xl bg-surface px-4 py-7 text-center text-foreground shadow-lg transition hover:-translate-y-1 hover:shadow-2xl"
                   >
-                    <span className="relative inline-flex h-14 w-14 items-center justify-center rounded-2xl" style={{ background: c.soft, color: c.ink }}>
+                    <span className="inline-flex h-14 w-14 items-center justify-center rounded-2xl transition group-hover:scale-105" style={{ background: c.soft, color: c.ink }}>
                       <CategoryIcon slug={t.icon} className="h-7 w-7" />
-                      <span aria-hidden className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-label ring-2 ring-white" />
                     </span>
                     <span className="text-[15px] font-bold leading-snug sm:text-base">{t.label}</span>
                   </Link>
