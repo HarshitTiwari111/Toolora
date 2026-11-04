@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SectionItemPage, sectionItemMetadata } from "@/components/SectionPages";
+import { SectionItemPage, sectionItemMetadata } from "@/components/SectionArticle";
 
 type Props = { params: Promise<{ slug: string }> };
 

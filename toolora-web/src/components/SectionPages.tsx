@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
 import ArticleCard from "./site/ArticleCard";
-import ArticleView from "./site/ArticleView";
 import PageHeader, { EmptyState, container } from "./site/PageHeader";
-import { findArticle, getArticleOr404, listArticles } from "@/lib/content";
+import { listArticles } from "@/lib/content";
 import { sections, type SectionKey } from "@/lib/sections";
 
+// Section list pages (/reviews/, /compare/ ...). Article page alag file me hai
+// (SectionArticle.tsx) taaki list pages HTML sanitizer load na karein.
 export async function SectionIndexPage({ section }: { section: SectionKey }) {
   const s = sections[section];
   const { items } = await listArticles({ articleType: s.articleType, productType: s.productType });
@@ -26,20 +26,4 @@ export async function SectionIndexPage({ section }: { section: SectionKey }) {
       </div>
     </>
   );
-}
-
-export async function SectionItemPage({ section, slug }: { section: SectionKey; slug: string }) {
-  const s = sections[section];
-  const article = await getArticleOr404(s.productType, s.articleType, slug);
-  return <ArticleView article={article} sectionLabel={s.label} sectionHref={`/${section}/`} pageType={s.pageType} />;
-}
-
-export async function sectionItemMetadata(section: SectionKey, slug: string): Promise<Metadata> {
-  const s = sections[section];
-  const a = await findArticle(s.productType, s.articleType, slug);
-  if (!a) return { title: "Page not found" };
-  return {
-    title: { absolute: a.metaTitle || `${a.title} | Toolora.ai` },
-    description: a.metaDescription || a.excerpt,
-  };
 }
