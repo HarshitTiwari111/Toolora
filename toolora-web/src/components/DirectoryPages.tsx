@@ -7,7 +7,10 @@ import ProductCard from "./site/ProductCard";
 import BrandMark from "./site/BrandMark";
 import FilterChips from "./site/FilterChips";
 import PageHeader, { EmptyState, container } from "./site/PageHeader";
-import { findProduct, getProductOr404, listProducts, type ProductDetail } from "@/lib/content";
+import { findProduct, getProductOr404, listArticles, listProducts, type ProductDetail } from "@/lib/content";
+import ArticleCard from "./site/ArticleCard";
+import JsonLd from "./site/JsonLd";
+import { breadcrumbJsonLd, itemListJsonLd, pageMetadata, softwareJsonLd } from "@/lib/seo";
 import {
   articleTypeLabels, areaBase, categoryName, factLabel, fmtDate, platformLabels, platformName, pricingLabels,
 } from "@/lib/labels";
@@ -90,6 +93,12 @@ export async function DirectoryIndex({ area, filters: raw }: { area: Area; filte
 
   return (
     <>
+      <JsonLd
+        data={[
+          breadcrumbJsonLd([{ name: a.label, path: base }]),
+          itemListJsonLd(a.title, items.map((p) => ({ name: p.brandName, path: p.url }))),
+        ]}
+      />
       <PageHeader
         crumbs={[{ label: a.label }]}
         eyebrow="Directory"
@@ -101,10 +110,10 @@ export async function DirectoryIndex({ area, filters: raw }: { area: Area; filte
         }
       />
       <div className={`${container} py-12`}>
-        <h2 className="mb-5 text-2xl font-bold tracking-tight">Browse by category</h2>
+        <h2 className="mb-5 font-serif text-3xl font-bold tracking-tight">Browse by category</h2>
         <CategoryGrid base={areaBase(area)} categories={a.categories} />
 
-        <h2 className="mb-5 mt-14 text-2xl font-bold tracking-tight">All {area === "ai" ? "AI tools" : "SaaS products"}</h2>
+        <h2 className="mb-5 mt-14 font-serif text-3xl font-bold tracking-tight">All {area === "ai" ? "AI tools" : "SaaS products"}</h2>
         <Filters basePath={base} filters={filters} useCaseOptions={useCaseOptions} />
         {items.length ? (
           <ProductGrid products={items} />
@@ -121,10 +130,20 @@ export async function DirectoryIndex({ area, filters: raw }: { area: Area; filte
 async function CategoryHub({ area, slug, filters: raw }: { area: Area; slug: string; filters: DirFilters }) {
   const a = areas[area];
   const cat = a.categories.find((c) => c.slug === slug)!;
-  const { items, filters, useCaseOptions } = await loadProducts(area, slug, raw);
+  const [{ items, filters, useCaseOptions }, articles] = await Promise.all([
+    loadProducts(area, slug, raw),
+    listArticles({ category: slug, limit: 6 }).then((r) => r.items),
+  ]);
+  const path = `${areaBase(area)}/${slug}/`;
 
   return (
     <>
+      <JsonLd
+        data={[
+          breadcrumbJsonLd([{ name: a.label, path: `${areaBase(area)}/` }, { name: cat.name, path }]),
+          itemListJsonLd(`${cat.name} tools`, items.map((p) => ({ name: p.brandName, path: p.url }))),
+        ]}
+      />
       <PageHeader
         crumbs={[{ label: a.label, href: `${areaBase(area)}/` }, { label: cat.name }]}
         eyebrow="Category"
@@ -141,8 +160,20 @@ async function CategoryHub({ area, slug, filters: raw }: { area: Area; slug: str
             text="Products appear here once an editor has verified their details against official sources."
           />
         )}
-        <div className="mt-12">
-          <h2 className="mb-5 text-xl font-bold tracking-tight">Other categories</h2>
+        {articles.length > 0 && (
+          <section className="mt-14">
+            <h2 className="mb-6 font-serif text-3xl font-bold tracking-tight">Latest {cat.name} articles</h2>
+            <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {articles.map((ar) => (
+                <li key={ar._id}>
+                  <ArticleCard article={ar} />
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+        <div className="mt-14">
+          <h2 className="mb-5 font-serif text-2xl font-bold tracking-tight">Other categories</h2>
           <CategoryGrid base={areaBase(area)} categories={a.categories.filter((c) => c.slug !== slug)} />
         </div>
       </div>
@@ -196,7 +227,24 @@ async function ProductProfile({ area, slug }: { area: Area; slug: string }) {
 
   return (
     <>
-      <div className="hero-glow border-b border-line">
+      <JsonLd
+        data={[
+          softwareJsonLd({
+            name: p.brandName,
+            description: p.shortDescription,
+            path: p.url,
+            officialUrl: p.officialUrl,
+            category: firstCat ? categoryName(area, firstCat) : a.label,
+            platforms: p.platforms.map(platformName),
+          }),
+          breadcrumbJsonLd([
+            { name: a.label, path: `${areaBase(area)}/` },
+            ...(firstCat ? [{ name: categoryName(area, firstCat), path: `${areaBase(area)}/${firstCat}/` }] : []),
+            { name: p.brandName, path: p.url },
+          ]),
+        ]}
+      />
+      <div className="border-b border-line bg-surface">
         <div className={`${container} pb-10 pt-8`}>
           <nav aria-label="Breadcrumb" className="mb-6 text-sm text-muted">
             <ol className="flex flex-wrap gap-1.5">
@@ -220,7 +268,7 @@ async function ProductProfile({ area, slug }: { area: Area; slug: string }) {
                 <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-accent">
                   {area === "ai" ? "AI tool" : "SaaS"} profile
                 </p>
-                <h1 className="text-3xl font-bold tracking-tight sm:text-5xl">{p.brandName}</h1>
+                <h1 className="font-serif text-4xl font-bold tracking-tight sm:text-5xl">{p.brandName}</h1>
                 {p.shortDescription && <p className="mt-3 max-w-3xl text-lg text-muted">{p.shortDescription}</p>}
                 <p className="mt-3 inline-flex items-center gap-1.5 text-sm text-muted">
                   <CalendarCheck className="h-4 w-4" />
@@ -357,15 +405,19 @@ export async function directoryMetadata(area: Area, slug: string, filtered: bool
   const robots = filtered ? { index: false, follow: true } : undefined;
   const cat = areas[area].categories.find((c) => c.slug === slug);
   if (cat) {
-    return { title: `${cat.name} tools`, description: `${cat.description} with dated, sourced facts.`, robots };
+    return {
+      ...pageMetadata({ title: `${cat.name} tools`, description: `${cat.description} with dated, sourced facts.`, path: `${areaBase(area)}/${slug}/` }),
+      ...(robots ? { robots } : {}),
+    };
   }
   if (!/^[a-z0-9-]+$/.test(slug)) return { title: "Page not found" };
   const p = await findProduct(slug);
   if (!p || p.productType !== area) return { title: "Page not found" };
   {
-    return {
+    return pageMetadata({
       title: `${p.brandName}: features, pricing and alternatives`,
       description: p.shortDescription || `Research-based profile of ${p.brandName} with sourced facts.`,
-    };
+      path: p.url,
+    });
   }
 }

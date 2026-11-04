@@ -45,3 +45,22 @@ export function cleanArticleHtml(html: string) {
     },
   });
 }
+
+export type TocItem = { id: string; text: string };
+
+// H2 headings ko id do (anchor links) aur "On this page" ki list banao.
+export function withHeadingIds(html: string): { html: string; toc: TocItem[] } {
+  const toc: TocItem[] = [];
+  const used = new Set<string>();
+  const out = html.replace(/<h2>([\s\S]*?)<\/h2>/g, (_m, inner: string) => {
+    const text = inner.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&#x27;|&#39;/g, "'").replace(/&quot;/g, '"').trim();
+    let id = text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60) || "section";
+    let n = 2;
+    const base = id;
+    while (used.has(id)) id = `${base}-${n++}`;
+    used.add(id);
+    toc.push({ id, text });
+    return `<h2 id="${id}">${inner}</h2>`;
+  });
+  return { html: out, toc };
+}

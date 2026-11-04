@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import PageHeader, { container } from "@/components/site/PageHeader";
 import { trustPages } from "@/lib/site";
 import { trustContent } from "@/lib/trust-content";
+import { pageMetadata } from "@/lib/seo";
 
 // Sirf PDF ke trust pages; baaki koi bhi top-level URL 404 dega.
 export const dynamicParams = false;
@@ -16,7 +17,8 @@ type Props = { params: Promise<{ page: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { page } = await params;
   const p = trustPages.find((x) => x.slug === page);
-  return { title: p?.title, description: trustContent[page]?.description };
+  if (!p) return { title: "Page not found" };
+  return pageMetadata({ title: p.title, description: trustContent[page]?.description, path: `/${p.slug}/` });
 }
 
 export default async function Page({ params }: Props) {

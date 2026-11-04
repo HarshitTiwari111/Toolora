@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { DirectoryIndex } from "@/components/DirectoryPages";
 
 type Props = { searchParams: Promise<{ pricing?: string; platform?: string; useCase?: string }> };
@@ -6,7 +7,7 @@ type Props = { searchParams: Promise<{ pricing?: string; platform?: string; useC
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
   const sp = await searchParams;
   const filtered = Boolean(sp.pricing || sp.platform || sp.useCase);
-  return { title: "SaaS directory", robots: filtered ? { index: false, follow: true } : undefined };
+  return pageMetadata({ title: "SaaS directory", description: "Business software by function, with their AI features and sourced, dated facts.", path: "/saas/", noindex: filtered });
 }
 
 export default async function Page({ searchParams }: Props) {

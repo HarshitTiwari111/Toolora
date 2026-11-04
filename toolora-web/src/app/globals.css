@@ -33,7 +33,37 @@
   }
 }
 
+/* Public website: reference jaisa light (cream) body, dark header/hero/footer.
+   Admin panel system theme follow karta rahega. */
+.site {
+  color-scheme: light;
+  --background: #faf8f4;
+  --surface: #ffffff;
+  --surface-2: #f3f0e9;
+  --foreground: #14161c;
+  --muted: #5a6070;
+  --line: #e7e2d8;
+  --accent: #4338ca;
+  --accent-2: #7c3aed;
+  --accent-soft: #eceafd;
+  --ring: rgb(67 56 202 / 0.25);
+  --shadow: 0 1px 2px rgb(20 22 28 / 0.04), 0 6px 18px rgb(20 22 28 / 0.06);
+  --ink: #121420;
+  --ink-2: #1b1e2d;
+  --ink-line: #2a2e42;
+  --ink-muted: #a5abc0;
+  --label: #f5b83d;
+  background: var(--background);
+  color: var(--foreground);
+}
+
 @theme inline {
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-line: var(--ink-line);
+  --color-ink-muted: var(--ink-muted);
+  --color-label: var(--label);
+  --font-serif: var(--font-fraunces);
   --color-background: var(--background);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
@@ -126,3 +156,7 @@ body {
 .article-body table { width: 100%; border-collapse: collapse; font-size: 0.95em; display: block; overflow-x: auto; }
 .article-body th, .article-body td { border: 1px solid var(--line); padding: 0.6em 0.8em; text-align: left; }
 .article-body th { background: var(--surface-2); font-weight: 600; }
+
+/* Sticky header ke neeche heading na chhupe (On this page links). */
+.article-body h2 { scroll-margin-top: 8.5rem; }
+.site .article-body h2, .site .article-body h3 { font-family: var(--font-fraunces), Georgia, serif; }

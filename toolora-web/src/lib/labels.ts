@@ -46,3 +46,26 @@ export function fmtDate(d: string | null | undefined) {
 export function platformName(p: string) {
   return platformLabels[p] ?? p;
 }
+
+// Reading time (~220 words/min) — HTML tags hata ke.
+export function readingMinutes(html: string) {
+  const words = html.replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 220));
+}
+
+export function initials(name: string) {
+  return (
+    name
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((w) => w.charAt(0).toUpperCase())
+      .join("") || "TE"
+  );
+}
+
+// Article ka category hub URL (blog filter ke liye bhi).
+export function articleCategory(a: { productType: "ai" | "saas"; category?: string }) {
+  if (!a.category) return null;
+  return { slug: a.category, name: categoryName(a.productType, a.category), href: `${areaBase(a.productType)}/${a.category}/` };
+}

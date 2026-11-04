@@ -29,6 +29,11 @@ const articleSchema = new Schema(
     reviewer: { type: String, default: "" },
     reviewMethod: { type: String, enum: REVIEW_METHODS, default: "research_based" },
     disclosure: { type: String, default: "" },
+    // Blog fields: main category (AI/SaaS category slug) aur cover image.
+    category: { type: String, default: "", index: true },
+    coverImageUrl: { type: String, default: "" },
+    coverImageAlt: { type: String, default: "" },
+    coverImageCredit: { type: String, default: "" },
     sources: { type: [sourceSchema], default: [] },
     faq: { type: [faqSchema], default: [] },
     // QA (PDF section 7) ke flags. Editor clear kare tab publish.

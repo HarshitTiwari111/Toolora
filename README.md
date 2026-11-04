@@ -22,11 +22,16 @@ npm run dev            # http://localhost:3000
 
 Optional demo data: `cd toolora-api && npm run seed:demo` (hatana: `npm run seed:demo -- --clear`).
 
+## Keyword research
+
+`docs/keywords-brands.csv` (PDF ke 100 brands × 5 seed keywords) aur `docs/keywords-categories.csv` (18 categories). Search volume / difficulty columns keyword tool se bharne hain — andaaze nahi.
+
 ## Progress
 
 1. Setup + foundation ✅
 2. Data model + admin panel ✅
 3. Page templates, search, filters ✅
+3b. Blog redesign (reference: weblumbaai.com layout), logo, on-page SEO (canonical, OG, JSON-LD, sitemap.xml, robots.txt) ✅
 4. SEO foundation (sitemap, schema, canonical) — next
 5. Topic queue + keywords
 6. n8n automation

@@ -1,176 +1,191 @@
 import Link from "next/link";
-import {
-  ArrowRight, BadgeCheck, CalendarCheck, CheckCircle2, CircleDollarSign, FileText, Link2, ListChecks, Scale, ShieldCheck,
-} from "lucide-react";
-import CategoryGrid from "@/components/CategoryGrid";
-import ArticleCard from "@/components/site/ArticleCard";
+import type { Metadata } from "next";
+import { ArrowRight, BadgeCheck, CalendarCheck, Link2, ShieldCheck } from "lucide-react";
+import ArticleCard, { NumberedList } from "@/components/site/ArticleCard";
+import CategoryIcon from "@/components/CategoryIcon";
 import SearchForm from "@/components/site/SearchForm";
+import { container } from "@/components/site/PageHeader";
 import { listArticles } from "@/lib/content";
-import { aiCategories, saasCategories } from "@/lib/site";
+import { pageMetadata } from "@/lib/seo";
+import { aiCategories, saasCategories, siteConfig } from "@/lib/site";
+
+export const metadata: Metadata = pageMetadata({
+  title: `${siteConfig.name} — AI tools reviews, comparisons and guides`,
+  description:
+    "Research-based reviews, comparisons, alternatives and guides for AI tools and SaaS. Every pricing and feature claim links to its source and shows when it was checked.",
+  path: "/",
+  absoluteTitle: true,
+});
+
+const tiles = [
+  ...aiCategories.map((c) => ({ href: `/ai-tools/${c.slug}/`, label: c.name, icon: c.slug })),
+  { href: "/saas/", label: "SaaS Software", icon: "project-management" },
+  { href: "/compare/", label: "Compare Tools", icon: "analytics" },
+];
 
 const principles = [
-  {
-    icon: Link2,
-    title: "Every claim has a source",
-    text: "Pricing and features link to the vendor's official page, so you can check them yourself.",
-  },
-  {
-    icon: CalendarCheck,
-    title: "Dated, not stale",
-    text: "Each fact shows when it was last verified, and pages are queued for regular refreshes.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Honest about method",
-    text: "We say clearly when a page is research-based. No invented test results or star ratings.",
-  },
-  {
-    icon: BadgeCheck,
-    title: "Reviewed by an editor",
-    text: "Nothing is published automatically. A human editor checks every page before it goes live.",
-  },
+  { icon: Link2, title: "Every claim has a source", text: "Pricing and features link to the vendor's official page, so you can check them yourself." },
+  { icon: CalendarCheck, title: "Dated, not stale", text: "Each fact shows when it was last verified, and pages are queued for regular refreshes." },
+  { icon: ShieldCheck, title: "Honest about method", text: "We say clearly when a page is research-based. No invented test results or star ratings." },
+  { icon: BadgeCheck, title: "Reviewed by an editor", text: "Nothing is published automatically. A human editor checks every page before it goes live." },
 ];
 
-// Hero ki right side: har product page me kya milega (real structure, koi fake data nahi).
-const anatomy = [
-  { icon: FileText, label: "Who it fits — and who it doesn't" },
-  { icon: ListChecks, label: "Features checked against official docs" },
-  { icon: CircleDollarSign, label: "Pricing with a \"checked on\" date" },
-  { icon: Scale, label: "Pros, limitations and alternatives" },
-  { icon: Link2, label: "Source links for every claim" },
-];
-
-function PageAnatomy() {
+function SectionHead({ eyebrow, title, text, center = true }: { eyebrow?: string; title: string; text?: React.ReactNode; center?: boolean }) {
   return (
-    <div className="relative hidden lg:block">
-      <div aria-hidden className="absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-accent/20 to-accent-2/10 blur-2xl" />
-      <div className="relative rounded-3xl border border-line bg-surface p-7 shadow-card">
-        <div className="mb-5 flex items-center justify-between">
-          <p className="text-sm font-semibold">Every product page includes</p>
-          <span className="rounded-full bg-accent-soft px-2.5 py-1 text-xs font-medium text-accent">Editor reviewed</span>
-        </div>
-        <ul className="space-y-3">
-          {anatomy.map((a) => (
-            <li key={a.label} className="flex items-center gap-3 rounded-2xl border border-line bg-background/60 p-3.5">
-              <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent-soft text-accent">
-                <a.icon className="h-4 w-4" />
-              </span>
-              <span className="text-sm font-medium">{a.label}</span>
-              <CheckCircle2 className="ml-auto h-4 w-4 text-green-600" />
-            </li>
-          ))}
-        </ul>
-      </div>
+    <div className={`mb-10 ${center ? "mx-auto max-w-2xl text-center" : ""}`}>
+      {eyebrow && <p className="mb-2 text-xs font-bold uppercase tracking-widest text-accent">{eyebrow}</p>}
+      <h2 className="font-serif text-3xl font-bold tracking-tight sm:text-4xl">{title}</h2>
+      {text && <p className="mt-3 text-muted">{text}</p>}
     </div>
   );
 }
 
 export default async function Home() {
-  const latest = (await listArticles({ limit: 4 })).items;
+  const all = (await listArticles({ limit: 30 })).items;
+  const latest = all.slice(0, 3);
+  const guides = all.filter((a) => a.articleType === "guide" || a.articleType === "alternatives").slice(0, 5);
+  const reviews = all.filter((a) => a.articleType === "review" || a.articleType === "compare").slice(0, 5);
+
   return (
     <>
-      <section className="hero-glow border-b border-line">
-        <div className="mx-auto grid max-w-[1600px] items-center gap-12 px-4 pb-16 pt-14 sm:px-6 sm:pb-20 sm:pt-20 lg:grid-cols-[1.2fr_1fr] lg:px-10">
-          <div>
-          <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 text-xs font-medium text-muted shadow-card">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent" /> AI tools · SaaS · Reviews · Comparisons
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-ink text-white">
+        <div aria-hidden className="pointer-events-none absolute -right-40 -top-40 h-[34rem] w-[34rem] rounded-full bg-accent/30 blur-3xl" />
+        <div aria-hidden className="pointer-events-none absolute -bottom-48 left-1/3 h-[28rem] w-[28rem] rounded-full bg-accent-2/20 blur-3xl" />
+        <div className={`${container} relative pb-16 pt-14 sm:pt-20`}>
+          <p className="mb-6 inline-flex rounded-full border border-label/60 bg-label/10 px-3 py-1 text-xs font-semibold text-label">
+            Independent reviews · AI-first guides · Sourced facts
           </p>
-          <h1 className="max-w-4xl text-4xl font-bold leading-[1.1] tracking-tight sm:text-6xl">
-            Find the right AI tool — <span className="text-gradient">with facts you can check.</span>
+          <h1 className="max-w-4xl font-serif text-4xl font-bold leading-[1.08] tracking-tight sm:text-6xl">
+            Find the right AI tool — with facts you can check.
           </h1>
-          <p className="mt-5 max-w-3xl text-lg leading-relaxed text-muted">
-            Research-based overviews, comparisons and alternatives for AI tools and SaaS products. Every pricing and
-            feature claim links to its source and shows when it was last verified.
+          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">
+            Research-based reviews, comparisons, alternatives and guides for AI tools and SaaS. Every price and feature links to its
+            source and shows when we checked it.
           </p>
-          <div className="mt-8">
-            <SearchForm />
-          </div>
-          <div className="mt-5 flex flex-wrap gap-3">
-            <Link
-              href="/ai-tools/"
-              className="inline-flex items-center gap-2 rounded-xl bg-accent px-5 py-3 font-medium text-white shadow-card transition hover:opacity-90"
-            >
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Link href="/ai-tools/" className="inline-flex items-center gap-2 rounded-full bg-label px-6 py-3 font-bold text-ink transition hover:brightness-95">
               Browse AI tools <ArrowRight className="h-4 w-4" />
             </Link>
-            <Link
-              href="/compare/"
-              className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-5 py-3 font-medium transition hover:border-accent/50"
-            >
-              Compare tools
+            <Link href="/blog/" className="rounded-full border border-white/70 px-6 py-3 font-semibold transition hover:bg-white hover:text-ink">
+              Read the blog
             </Link>
           </div>
+          <div className="mt-8 max-w-2xl">
+            <SearchForm />
           </div>
-          <PageAnatomy />
-        </div>
-      </section>
 
-      <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-10 py-14">
-        <section className="mb-16">
-          <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">AI tools by category</h2>
-              <p className="mt-1 text-muted">Start with what you need to get done.</p>
-            </div>
-            <Link href="/ai-tools/" className="inline-flex items-center gap-1 text-sm font-medium text-accent">
-              All AI tools <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-          <CategoryGrid base="/ai-tools" categories={aiCategories} />
-        </section>
-
-        {latest.length > 0 && (
-          <section className="mb-16">
-            <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-              <div>
-                <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Latest reviews & comparisons</h2>
-                <p className="mt-1 text-muted">Recently published after editorial review.</p>
-              </div>
-              <Link href="/reviews/" className="inline-flex items-center gap-1 text-sm font-medium text-accent">
-                All reviews <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-            <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {latest.map((a) => (
-                <li key={a._id}>
-                  <ArticleCard article={a} />
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        <section className="mb-16 rounded-3xl border border-line bg-surface p-6 shadow-card sm:p-10">
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">How Toolora.ai works</h2>
-          <p className="mt-1 max-w-2xl text-muted">Useful first. Here is what you can expect from every page.</p>
-          <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {principles.map((p) => (
-              <li key={p.title}>
-                <span className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-accent-soft text-accent">
-                  <p.icon className="h-5 w-5" />
-                </span>
-                <h3 className="font-semibold">{p.title}</h3>
-                <p className="mt-1 text-sm leading-relaxed text-muted">{p.text}</p>
+          <ul className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+            {tiles.map((t) => (
+              <li key={t.href}>
+                <Link
+                  href={t.href}
+                  className="flex h-full flex-col items-center justify-center gap-3 rounded-2xl bg-surface px-4 py-6 text-center text-foreground shadow-card transition hover:-translate-y-0.5 hover:shadow-xl"
+                >
+                  <span className="text-accent">
+                    <CategoryIcon slug={t.icon} className="h-9 w-9" />
+                  </span>
+                  <span className="text-sm font-bold">{t.label}</span>
+                </Link>
               </li>
             ))}
           </ul>
-          <Link href="/how-we-review/" className="mt-8 inline-flex items-center gap-1 text-sm font-medium text-accent">
-            Read how we review <ArrowRight className="h-4 w-4" />
-          </Link>
-        </section>
+        </div>
+      </section>
 
-        <section>
-          <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">SaaS by business function</h2>
-              <p className="mt-1 text-muted">Software for teams, with a look at their AI features.</p>
-            </div>
-            <Link href="/saas/" className="inline-flex items-center gap-1 text-sm font-medium text-accent">
-              All SaaS <ArrowRight className="h-4 w-4" />
+      {/* SaaS */}
+      <section className="border-b border-line bg-surface py-16 sm:py-20">
+        <div className={container}>
+          <SectionHead
+            eyebrow="SaaS reviews"
+            title="Business software, and the AI inside it"
+            text="CRMs, project tools, email platforms and more — reviewed with the same no-fake-scores rules as everything else."
+          />
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {saasCategories.map((c) => (
+              <li key={c.slug}>
+                <Link href={`/saas/${c.slug}/`} className="group flex h-full flex-col rounded-2xl border border-line bg-background p-6 transition hover:border-accent/50 hover:shadow-card">
+                  <span className="mb-4 text-accent">
+                    <CategoryIcon slug={c.slug} className="h-9 w-9" />
+                  </span>
+                  <span className="text-lg font-bold">{c.name}</span>
+                  <span className="mt-1 text-sm text-muted">{c.description}</span>
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent">
+                    Browse <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-10 text-center">
+            <Link href="/saas/" className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 font-semibold text-white transition hover:bg-ink-2">
+              All SaaS categories <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-          <CategoryGrid base="/saas" categories={saasCategories} />
-        </section>
-      </div>
+        </div>
+      </section>
+
+      {/* Latest articles */}
+      <section className="py-16 sm:py-20">
+        <div className={container}>
+          <SectionHead
+            title="Latest Articles"
+            text={
+              <>
+                New reviews, comparisons and guides — read{" "}
+                <Link href="/blog/" className="font-bold uppercase text-accent hover:underline">
+                  our blog
+                </Link>{" "}
+                to keep up with the best AI tools.
+              </>
+            }
+          />
+          {latest.length ? (
+            <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {latest.map((a, i) => (
+                <li key={a._id}>
+                  <ArticleCard article={a} priority={i === 0} />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="rounded-2xl border border-dashed border-line bg-surface p-10 text-center text-muted">
+              The first articles are being researched and reviewed.
+            </p>
+          )}
+
+          {(guides.length > 0 || reviews.length > 0) && (
+            <div className="mt-14 grid gap-6 lg:grid-cols-2">
+              {guides.length > 0 && <NumberedList title="Latest guides" items={guides} />}
+              {reviews.length > 0 && <NumberedList title="Latest reviews & comparisons" items={reviews} />}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Trust */}
+      <section className="pb-4">
+        <div className={container}>
+          <div className="rounded-3xl bg-ink p-8 text-white sm:p-12">
+            <h2 className="font-serif text-3xl font-bold tracking-tight">How Toolora.ai works</h2>
+            <p className="mt-2 max-w-2xl text-ink-muted">Useful first. Here is what you can expect from every page.</p>
+            <ul className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+              {principles.map((p) => (
+                <li key={p.title}>
+                  <span className="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-label">
+                    <p.icon className="h-5 w-5" />
+                  </span>
+                  <h3 className="font-bold">{p.title}</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-ink-muted">{p.text}</p>
+                </li>
+              ))}
+            </ul>
+            <Link href="/how-we-review/" className="mt-10 inline-flex items-center gap-1 font-semibold text-label hover:underline">
+              Read how we review <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
     </>
   );
 }

@@ -17,7 +17,7 @@ export default function SearchForm({ defaultValue = "", autoFocus = false }: { d
         minLength={2}
         maxLength={80}
         placeholder="Search tools, use cases or articles…"
-        className="h-13 w-full rounded-2xl border border-line bg-surface py-3.5 pl-12 pr-28 text-base shadow-card outline-none transition focus:border-accent focus:ring-4 focus:ring-[var(--ring)]"
+        className="h-13 w-full rounded-2xl border border-line bg-surface py-3.5 pl-12 pr-28 text-base text-foreground shadow-card outline-none placeholder:text-muted transition focus:border-accent focus:ring-4 focus:ring-[var(--ring)]"
       />
       <button
         type="submit"

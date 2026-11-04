@@ -51,7 +51,8 @@ export const sourceFactSchema = z.object({
 
 const articleSource = z.object({ url, title: z.string().max(300).default(""), checkedAt: dateish.nullable().default(null) });
 
-export const articleSchema = z.object({
+export const articleSchema = z
+  .object({
   title: z.string().trim().min(1).max(200),
   slug: slug.optional(),
   articleType: z.enum(ARTICLE_TYPES),
@@ -66,11 +67,25 @@ export const articleSchema = z.object({
   reviewer: z.string().max(100).default(""),
   reviewMethod: z.enum(REVIEW_METHODS).default("research_based"),
   disclosure: z.string().max(1000).default(""),
+  category: z.string().max(40).default(""),
+  coverImageUrl: optionalUrl.default(""),
+  coverImageAlt: z.string().max(200).default(""),
+  coverImageCredit: z.string().max(200).default(""),
   sources: z.array(articleSource).default([]),
   faq: z.array(z.object({ question: z.string().min(1), answer: z.string().min(1) })).default([]),
   qaFlags: z.array(z.string()).default([]),
   claimsNeedingReview: z.array(z.string()).default([]),
-});
+})
+  .superRefine((a, ctx) => {
+    if (!a.category) return;
+    const allowed: readonly string[] = a.productType === "saas" ? SAAS_CATEGORIES : AI_CATEGORIES;
+    if (!allowed.includes(a.category)) {
+      ctx.addIssue({ code: "custom", path: ["category"], message: `Unknown ${a.productType} category: ${a.category}` });
+    }
+    if (a.coverImageUrl && !a.coverImageAlt.trim()) {
+      ctx.addIssue({ code: "custom", path: ["coverImageAlt"], message: "Cover image needs alt text (SEO + accessibility)" });
+    }
+  });
 
 export const articleStatusSchema = z.object({
   status: z.enum(ARTICLE_STATUSES),

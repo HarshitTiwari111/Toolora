@@ -16,11 +16,11 @@ export default function PageHeader({
   children?: React.ReactNode;
 }) {
   return (
-    <div className="hero-glow border-b border-line">
+    <div className="border-b border-line bg-surface">
       <div className={`${container} pb-10 pt-8`}>
         <Breadcrumbs items={crumbs} />
-        {eyebrow && <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-accent">{eyebrow}</p>}
-        <h1 className="max-w-4xl text-3xl font-bold tracking-tight sm:text-5xl">{title}</h1>
+        {eyebrow && <p className="mb-2 text-xs font-bold uppercase tracking-widest text-accent">{eyebrow}</p>}
+        <h1 className="max-w-4xl font-serif text-4xl font-bold tracking-tight sm:text-5xl">{title}</h1>
         {description && <div className="mt-4 max-w-3xl text-lg leading-relaxed text-muted">{description}</div>}
         {children}
       </div>

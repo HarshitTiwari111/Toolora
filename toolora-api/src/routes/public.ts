@@ -40,7 +40,7 @@ publicRouter.get("/products/:slug", async (req, res) => {
   );
   const [facts, articles] = await Promise.all([
     SourceFact.find({ product: product._id }).select("fieldName factValue sourceUrl sourceType checkedAt").sort({ fieldName: 1 }).lean(),
-    Article.find({ products: product._id, status: "published" }).select("title slug articleType productType excerpt publishedAt").lean(),
+    Article.find({ products: product._id, status: "published" }).select("title slug articleType productType excerpt category coverImageUrl coverImageAlt author publishedAt updatedAt").sort({ publishedAt: -1 }).lean(),
   ]);
   res.json({
     ...product,
@@ -57,9 +57,10 @@ publicRouter.get("/articles", async (req, res) => {
   const productType = oneOf(PRODUCT_TYPES, req.query.productType);
   if (articleType) filter.articleType = articleType;
   if (productType) filter.productType = productType;
+  if (typeof req.query.category === "string" && /^[a-z0-9-]{1,40}$/.test(req.query.category)) filter.category = req.query.category;
 
   const [items, total] = await Promise.all([
-    Article.find(filter).select("title slug articleType productType excerpt publishedAt updatedAt").sort({ publishedAt: -1 }).skip(skip).limit(limit).lean(),
+    Article.find(filter).select("title slug articleType productType excerpt category coverImageUrl coverImageAlt author publishedAt updatedAt").sort({ publishedAt: -1 }).skip(skip).limit(limit).lean(),
     Article.countDocuments(filter),
   ]);
   res.json({ items: items.map((a) => ({ ...a, url: articlePath(a) })), total, page, limit });
@@ -96,7 +97,7 @@ publicRouter.get("/search", async (req, res) => {
       .limit(24)
       .lean(),
     Article.find({ status: "published", $or: [{ title: rx }, { excerpt: rx }] })
-      .select("title slug articleType productType excerpt publishedAt updatedAt")
+      .select("title slug articleType productType excerpt category coverImageUrl coverImageAlt author publishedAt updatedAt")
       .sort({ publishedAt: -1 })
       .limit(24)
       .lean(),

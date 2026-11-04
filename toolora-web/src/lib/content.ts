@@ -43,6 +43,10 @@ export type ArticleSummary = {
   articleType: "review" | "compare" | "alternatives" | "guide";
   productType: "ai" | "saas";
   excerpt: string;
+  category?: string;
+  coverImageUrl?: string;
+  coverImageAlt?: string;
+  author?: string;
   publishedAt: string | null;
   updatedAt?: string;
   url: string;
@@ -60,6 +64,7 @@ export type PublicArticle = ArticleSummary & {
   reviewer: string;
   reviewMethod: "research_based" | "hands_on";
   disclosure: string;
+  coverImageCredit?: string;
   sources: { url: string; title: string; checkedAt: string | null }[];
   faq: { question: string; answer: string }[];
   updatedAt: string;
@@ -105,11 +110,11 @@ export async function getProductOr404(slug: string) {
   return (await findProduct(slug)) ?? notFound();
 }
 
-export async function listArticles(params: { articleType?: string; productType?: string; limit?: number }) {
+export async function listArticles(params: { articleType?: string; productType?: string; category?: string; limit?: number }) {
   const limit = String(params.limit ?? 100);
   return (
     (await get<Paged<ArticleSummary>>(
-      `/articles${qs({ articleType: params.articleType, productType: params.productType, limit })}`,
+      `/articles${qs({ articleType: params.articleType, productType: params.productType, category: params.category, limit })}`,
     )) ?? { items: [], total: 0 }
   );
 }

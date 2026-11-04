@@ -49,6 +49,10 @@ export type Article = {
   reviewer: string;
   reviewMethod: "research_based" | "hands_on";
   disclosure: string;
+  category: string;
+  coverImageUrl: string;
+  coverImageAlt: string;
+  coverImageCredit: string;
   sources: { url: string; title: string; checkedAt: string | null }[];
   qaFlags: string[];
   claimsNeedingReview: string[];

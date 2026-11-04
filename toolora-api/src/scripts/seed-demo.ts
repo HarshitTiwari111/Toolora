@@ -124,6 +124,7 @@ async function seed() {
       slug: "demo-demowrite-ai-review",
       articleType: "review",
       productType: "ai",
+      category: "writing",
       products: [write._id],
       audience: "Bloggers and small marketing teams",
       body: body("DemoWrite AI"),
@@ -151,6 +152,7 @@ async function seed() {
       slug: "demo-demowrite-ai-vs-demovoice-studio",
       articleType: "compare",
       productType: "ai",
+      category: "writing",
       products: [write._id, voice._id],
       body: body("DemoWrite AI vs DemoVoice Studio"),
       excerpt: "DEMO comparison article.",
@@ -173,6 +175,7 @@ async function seed() {
       slug: "demo-demovoice-studio-alternatives",
       articleType: "alternatives",
       productType: "ai",
+      category: "audio",
       products: [voice._id],
       body: body("DemoVoice Studio alternatives"),
       excerpt: "DEMO alternatives page waiting for editor review.",
@@ -194,6 +197,7 @@ async function seed() {
       slug: "demo-democrm-cloud-review",
       articleType: "review",
       productType: "saas",
+      category: "crm",
       products: [crm._id],
       body: body("DemoCRM Cloud"),
       excerpt: "DEMO draft created by automation.",
@@ -205,6 +209,41 @@ async function seed() {
       createdBy: "automation",
       topicKey: key(3),
       updateHistory: [{ date: new Date(), note: "Draft created by automation", by: "automation" }],
+    },
+  ]);
+
+  // Extra published demo guides (blog layout bharne ke liye).
+  const guideBody = (topic: string) => `
+<h2>Who this guide is for</h2>
+<p>DEMO content about ${topic}. Replace with a real, sourced guide before launch.</p>
+<h2>What to look for</h2>
+<ul><li>Clear pricing on the official site</li><li>Export and data ownership</li><li>Team features you actually need</li></ul>
+<h2>How to compare options</h2>
+<p>Shortlist two or three tools, check each one's official pricing page, and note the date you checked.</p>
+<h2>Common mistakes</h2>
+<p>Choosing on hype, ignoring limits on the free plan, and skipping the data-export check.</p>`;
+  await Article.create([
+    {
+      title: "How to Choose an AI Writing Tool (Demo Guide)",
+      slug: "demo-how-to-choose-an-ai-writing-tool",
+      articleType: "guide", productType: "ai", category: "writing", products: [write._id],
+      body: guideBody("choosing an AI writing tool"),
+      excerpt: "DEMO: a simple checklist for picking an AI writing assistant without overpaying.",
+      metaTitle: "How to Choose an AI Writing Tool (Demo)", metaDescription: "DEMO guide: checklist for choosing an AI writing tool.",
+      author: "Demo Author", reviewer: "Demo Editor", disclosure,
+      sources: [{ url: "https://example.com/demowrite/pricing", title: "DemoWrite pricing", checkedAt: daysAgo(3) }],
+      status: "published", publishedAt: daysAgo(1),
+    },
+    {
+      title: "AI Meeting Notes: A Practical Checklist (Demo Guide)",
+      slug: "demo-ai-meeting-notes-checklist",
+      articleType: "guide", productType: "ai", category: "productivity",
+      body: guideBody("AI meeting notes"),
+      excerpt: "DEMO: what to check before letting an AI tool join and summarise your meetings.",
+      metaTitle: "AI Meeting Notes Checklist (Demo)", metaDescription: "DEMO guide: checklist for AI meeting notes tools.",
+      author: "Demo Author", reviewer: "Demo Editor", disclosure,
+      sources: [{ url: "https://example.com/demomeet", title: "DemoMeet home", checkedAt: daysAgo(4) }],
+      status: "published", publishedAt: daysAgo(4),
     },
   ]);
 
@@ -232,7 +271,7 @@ async function seed() {
     { runId: run2, node: "Fetch first-party sources", status: "error", retries: 2, topicKey: key(4), errorSummary: "Pricing page blocked (403) — moved to manual research" },
   ]);
 
-  console.log("[demo] Seeded: 4 products, 5 facts, 6 topics, 4 articles, 3 link suggestions, 6 workflow logs");
+  console.log("[demo] Seeded: 4 products, 5 facts, 6 topics, 6 articles, 3 link suggestions, 6 workflow logs");
 }
 
 async function main() {

@@ -1,5 +1,6 @@
 import { saveArticleAction } from "@/app/admin/actions";
 import type { Article, Product } from "@/lib/admin-types";
+import { aiCategories, saasCategories } from "@/lib/site";
 import { Button, Field, dateInput, inputCls } from "./ui";
 
 export default function ArticleForm({ article, products }: { article?: Article; products: Product[] }) {
@@ -32,6 +33,33 @@ export default function ArticleForm({ article, products }: { article?: Article; 
         </Field>
         <Field label="Slug" hint="Khaali = title se banega">
           <input name="slug" defaultValue={a?.slug} pattern="[a-z0-9]+(-[a-z0-9]+)*" className={inputCls} />
+        </Field>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Field label="Blog category" hint="Card, breadcrumb aur /blog filter me dikhegi">
+          <select name="category" defaultValue={a?.category ?? ""} className={inputCls}>
+            <option value="">— None —</option>
+            <optgroup label="AI tools">
+              {aiCategories.map((c) => (
+                <option key={c.slug} value={c.slug}>{c.name}</option>
+              ))}
+            </optgroup>
+            <optgroup label="SaaS (section = SaaS)">
+              {saasCategories.map((c) => (
+                <option key={c.slug} value={c.slug}>{c.name}</option>
+              ))}
+            </optgroup>
+          </select>
+        </Field>
+        <Field label="Cover image URL" hint="https://… (Unsplash, Cloudinary, etc.). Size ~1600×900">
+          <input name="coverImageUrl" type="url" defaultValue={a?.coverImageUrl} className={inputCls} />
+        </Field>
+        <Field label="Cover image alt text" hint="Image me kya hai — SEO + accessibility (image ho to zaroori)">
+          <input name="coverImageAlt" maxLength={200} defaultValue={a?.coverImageAlt} className={inputCls} />
+        </Field>
+        <Field label="Photo credit" hint="e.g. Photo: Name on Unsplash">
+          <input name="coverImageCredit" maxLength={200} defaultValue={a?.coverImageCredit} className={inputCls} />
         </Field>
       </div>
 

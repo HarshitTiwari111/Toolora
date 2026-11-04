@@ -46,12 +46,24 @@ export const trustPages = [
   { slug: "corrections", title: "Corrections" },
 ] as const;
 
-export const mainNav = [
-  { href: "/ai-tools/", label: "AI Tools" },
-  { href: "/saas/", label: "SaaS" },
+export type NavItem = { href: string; label: string; menu?: { href: string; label: string }[] };
+
+export const mainNav: NavItem[] = [
+  {
+    href: "/ai-tools/",
+    label: "AI Tools",
+    menu: [{ href: "/ai-tools/", label: "All AI tools" }, ...aiCategories.map((c) => ({ href: `/ai-tools/${c.slug}/`, label: c.name }))],
+  },
+  {
+    href: "/saas/",
+    label: "SaaS",
+    menu: [{ href: "/saas/", label: "All SaaS" }, ...saasCategories.map((c) => ({ href: `/saas/${c.slug}/`, label: c.name }))],
+  },
   { href: "/reviews/", label: "Reviews" },
   { href: "/compare/", label: "Compare" },
+  { href: "/alternatives/", label: "Alternatives" },
   { href: "/guides/", label: "Guides" },
+  { href: "/blog/", label: "Blog" },
 ];
 
 export function humanize(slug: string) {
