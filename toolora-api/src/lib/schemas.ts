@@ -7,6 +7,8 @@ import {
 
 const url = z.url({ protocol: /^https?$/ });
 const optionalUrl = z.union([url, z.literal("")]);
+// Apni site ki image: "/images/articles/x.png" (public folder) ya poora https URL.
+const imageRef = z.union([url, z.string().regex(/^\/[A-Za-z0-9/_.-]+\.(png|jpe?g|webp|svg|avif)$/, "Image: https URL or /images/... path"), z.literal("")]);
 const dateish = z.coerce.date();
 const objectIdStr = z.string().regex(/^[a-f0-9]{24}$/i, "Invalid id");
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug: lowercase letters, numbers, hyphens");
@@ -68,7 +70,7 @@ export const articleSchema = z
   reviewMethod: z.enum(REVIEW_METHODS).default("research_based"),
   disclosure: z.string().max(1000).default(""),
   category: z.string().max(40).default(""),
-  coverImageUrl: optionalUrl.default(""),
+  coverImageUrl: imageRef.default(""),
   coverImageAlt: z.string().max(200).default(""),
   coverImageCredit: z.string().max(200).default(""),
   sources: z.array(articleSource).default([]),

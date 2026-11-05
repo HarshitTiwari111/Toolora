@@ -8,13 +8,20 @@ export function cleanArticleHtml(html: string) {
     allowedTags: [
       "h2", "h3", "h4", "p", "br", "hr", "ul", "ol", "li", "strong", "b", "em", "i", "u",
       "a", "blockquote", "code", "pre", "table", "thead", "tbody", "tr", "th", "td", "caption",
-      "figure", "figcaption", "img", "span", "sup", "sub",
+      "figure", "figcaption", "img", "span", "sup", "sub", "div",
     ],
     allowedAttributes: {
       a: ["href", "title", "rel", "target"],
       img: ["src", "alt", "width", "height", "loading"],
       th: ["scope", "colspan", "rowspan"],
       td: ["colspan", "rowspan"],
+    },
+    // Sirf yahi design classes chalengi (globals.css me styled), baaki class hata di jaati hai.
+    allowedClasses: {
+      div: ["tldr", "callout", "tip", "warn", "verdict", "pros-cons", "pros", "cons", "table-wrap"],
+      ul: ["checks", "crosses"],
+      p: ["lead", "label"],
+      figure: ["wide"],
     },
     allowedSchemes: ["http", "https", "mailto"],
     allowProtocolRelative: false,

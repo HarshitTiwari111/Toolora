@@ -11,7 +11,7 @@ export function Cover({
   priority = false,
   big = false,
 }: {
-  article: ArticleSummary;
+  article: Omit<ArticleSummary, "products">;
   className?: string;
   sizes?: string;
   priority?: boolean;

@@ -50,11 +50,13 @@ export type ArticleSummary = {
   publishedAt: string | null;
   updatedAt?: string;
   url: string;
+  // Sirf list endpoint deta hai (product ids) — category page par "Read review" ke liye.
+  products?: string[];
 };
 
 export type ProductDetail = PublicProduct & { facts: PublicFact[]; articles: ArticleSummary[] };
 
-export type PublicArticle = ArticleSummary & {
+export type PublicArticle = Omit<ArticleSummary, "products"> & {
   products: PublicProduct[];
   audience: string;
   body: string;

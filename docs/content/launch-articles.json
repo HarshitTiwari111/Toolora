@@ -1,0 +1,286 @@
+{
+  "checkedAt": "2026-11-05",
+  "products": [
+    {
+      "brandName": "Otter.ai",
+      "slug": "otter-ai",
+      "productType": "ai",
+      "categories": [
+        "productivity"
+      ],
+      "shortDescription": "AI meeting assistant that records and transcribes meetings live, then writes summaries with action items and answers questions through Otter AI Chat.",
+      "officialUrl": "https://otter.ai/",
+      "affiliateUrl": "",
+      "logoRightsNote": "No logo used. Brand initials only.",
+      "pricingModel": "freemium",
+      "platforms": [
+        "web",
+        "ios",
+        "android",
+        "mac",
+        "windows",
+        "chrome-extension"
+      ],
+      "useCases": [
+        "Meeting notes",
+        "Transcription",
+        "Action items"
+      ],
+      "lastVerifiedAt": "2026-11-05",
+      "status": "active",
+      "facts": [
+        {
+          "fieldName": "free_plan",
+          "factValue": "Basic plan is free (\"Free forever\"): 300 monthly transcription minutes, 30 minutes per conversation, 3 lifetime audio/video file imports.",
+          "sourceUrl": "https://otter.ai/pricing",
+          "evidenceNote": "Basic plan card and comparison table."
+        },
+        {
+          "fieldName": "pricing_pro",
+          "factValue": "Pro: $16.99 per user/month on the Monthly toggle; $8.33 per user/month on the Annual toggle (USD).",
+          "sourceUrl": "https://otter.ai/pricing",
+          "evidenceNote": "Page also shows a lower asterisked price; footnote says the offer is valid only with an India-issued credit card."
+        },
+        {
+          "fieldName": "pricing_business",
+          "factValue": "Business: $19.99 per user/month on the Annual toggle; Monthly toggle shows $30 struck through and $24 per user/month (\"20% off for 3 months+\").",
+          "sourceUrl": "https://otter.ai/pricing",
+          "evidenceNote": "Homepage says Business includes a 7-day free trial."
+        },
+        {
+          "fieldName": "pricing_enterprise",
+          "factValue": "Enterprise: no public price; \"Schedule a demo\".",
+          "sourceUrl": "https://otter.ai/pricing",
+          "evidenceNote": ""
+        },
+        {
+          "fieldName": "meeting_platforms",
+          "factValue": "Joins Zoom, Microsoft Teams and Google Meet meetings to write and share notes.",
+          "sourceUrl": "https://otter.ai/",
+          "evidenceNote": "Also listed on the pricing page."
+        },
+        {
+          "fieldName": "languages",
+          "factValue": "AI transcription in English, Spanish, French, German, Japanese and Chinese.",
+          "sourceUrl": "https://otter.ai/pricing",
+          "evidenceNote": "Comparison table."
+        },
+        {
+          "fieldName": "platforms",
+          "factValue": "Mac and Windows desktop apps, iOS and Android apps, Chrome extension, web recording.",
+          "sourceUrl": "https://otter.ai/",
+          "evidenceNote": "Download section and pricing table."
+        }
+      ]
+    },
+    {
+      "brandName": "Trello",
+      "slug": "trello",
+      "productType": "saas",
+      "categories": [
+        "project-management"
+      ],
+      "shortDescription": "Board-and-card project management tool from Atlassian with built-in no-code automation, Power-Ups, extra views on Premium, and AI features on paid plans.",
+      "officialUrl": "https://trello.com/",
+      "affiliateUrl": "",
+      "logoRightsNote": "No logo used. Brand initials only.",
+      "pricingModel": "freemium",
+      "platforms": [
+        "web",
+        "ios",
+        "android",
+        "mac",
+        "windows"
+      ],
+      "useCases": [
+        "Task boards",
+        "Team projects",
+        "Personal planning"
+      ],
+      "lastVerifiedAt": "2026-11-05",
+      "status": "active",
+      "facts": [
+        {
+          "fieldName": "free_plan",
+          "factValue": "Free: $0, up to 10 collaborators per Workspace, up to 10 boards per Workspace, 10MB per file, 250 Workspace command runs per month, unlimited cards and Power-Ups.",
+          "sourceUrl": "https://trello.com/pricing",
+          "evidenceNote": ""
+        },
+        {
+          "fieldName": "pricing_standard",
+          "factValue": "Standard: $5 USD per user/month billed annually ($6 billed monthly). Unlimited boards, 250MB per file, 1,000 command runs per month, AI, Custom Fields.",
+          "sourceUrl": "https://trello.com/pricing",
+          "evidenceNote": ""
+        },
+        {
+          "fieldName": "pricing_premium",
+          "factValue": "Premium: $10 USD per user/month billed annually ($12.50 billed monthly). Calendar, Timeline, Table, Dashboard and Map views; unlimited command runs; admin and security features.",
+          "sourceUrl": "https://trello.com/pricing",
+          "evidenceNote": "Free trial of Premium available per FAQ."
+        },
+        {
+          "fieldName": "pricing_enterprise",
+          "factValue": "Enterprise: $17.50 USD per user/month billed annually ($210.00 annual price per user).",
+          "sourceUrl": "https://trello.com/pricing",
+          "evidenceNote": ""
+        },
+        {
+          "fieldName": "integrations",
+          "factValue": "200+ apps and tools via Power-Ups, e.g. Slack, Google Drive, Salesforce; some partner Power-Ups need an extra subscription.",
+          "sourceUrl": "https://trello.com/pricing",
+          "evidenceNote": ""
+        },
+        {
+          "fieldName": "security",
+          "factValue": "SOC2 Type 2, ISO/IEC 27001 and PCI-DSS certified; cloud-only product.",
+          "sourceUrl": "https://trello.com/pricing",
+          "evidenceNote": "FAQ section."
+        },
+        {
+          "fieldName": "platforms",
+          "factValue": "Web (latest Chrome, Firefox, Edge, Safari), iOS and Android apps, desktop apps via the Mac App Store and Microsoft Store.",
+          "sourceUrl": "https://trello.com/platforms",
+          "evidenceNote": ""
+        }
+      ]
+    }
+  ],
+  "topics": [
+    {
+      "primaryKeyword": "otter.ai review",
+      "intent": "review",
+      "productType": "ai",
+      "brand": "Otter.ai",
+      "priority": 4,
+      "sourceUrls": [
+        "https://otter.ai/pricing",
+        "https://otter.ai/"
+      ],
+      "sourceCheckedAt": "2026-11-05"
+    },
+    {
+      "primaryKeyword": "trello review",
+      "intent": "review",
+      "productType": "saas",
+      "brand": "Trello",
+      "priority": 4,
+      "sourceUrls": [
+        "https://trello.com/pricing",
+        "https://trello.com/",
+        "https://trello.com/platforms"
+      ],
+      "sourceCheckedAt": "2026-11-05"
+    }
+  ],
+  "articles": [
+    {
+      "topicKeyword": "otter.ai review",
+      "productSlugs": [
+        "otter-ai"
+      ],
+      "title": "Otter.ai Review 2026: Features, Pricing and Who It's For",
+      "slug": "otter-ai-review",
+      "articleType": "review",
+      "productType": "ai",
+      "category": "productivity",
+      "audience": "Professionals and small teams who want automatic meeting notes",
+      "excerpt": "Otter.ai review: what the AI meeting assistant does, every plan's price and limits checked on the official site, plus who it suits and who should look elsewhere.",
+      "metaTitle": "Otter.ai Review 2026: Features, Pricing & Plan Limits",
+      "metaDescription": "Otter.ai review 2026: live transcription, AI summaries and AI Chat explained, with plan prices and free plan limits checked on otter.ai. Who it suits.",
+      "author": "Toolora Editorial Team",
+      "reviewMethod": "research_based",
+      "disclosure": "Toolora.ai has no affiliate relationship with Otter.ai and earns nothing from this page. If that changes, links will be clearly marked as sponsored.",
+      "sources": [
+        {
+          "url": "https://otter.ai/pricing",
+          "title": "Otter.ai pricing and plan comparison",
+          "checkedAt": "2026-11-05"
+        },
+        {
+          "url": "https://otter.ai/",
+          "title": "Otter.ai homepage (features, apps, FAQ)",
+          "checkedAt": "2026-11-05"
+        }
+      ],
+      "faq": [
+        {
+          "question": "Is Otter.ai free?",
+          "answer": "Yes. The Basic plan is free and includes 300 transcription minutes a month, up to 30 minutes per conversation and 3 audio/video file imports in total (checked on otter.ai/pricing, 5 Nov 2026)."
+        },
+        {
+          "question": "Which meeting apps does Otter.ai work with?",
+          "answer": "Otter's official site says it can join Zoom, Microsoft Teams and Google Meet meetings to take notes. It also offers Mac and Windows desktop apps that record without a bot joining the call."
+        },
+        {
+          "question": "What languages does Otter.ai transcribe?",
+          "answer": "The pricing page lists AI transcription in English, Spanish, French, German, Japanese and Chinese."
+        },
+        {
+          "question": "Did Toolora test Otter.ai?",
+          "answer": "No. This is a research-based overview built from Otter's official pages. We have not run our own tests, so we do not give it a score."
+        }
+      ],
+      "bodyFile": "articles/otter-ai-review.html",
+      "coverImageUrl": "/images/articles/otter-ai-review-cover.jpg",
+      "coverImageAlt": "Illustration of a video meeting turning into an AI meeting summary with action items",
+      "coverImageCredit": "Illustration: Toolora.ai"
+    },
+    {
+      "topicKeyword": "trello review",
+      "productSlugs": [
+        "trello"
+      ],
+      "title": "Trello Review 2026: Plans, Features and Limits Explained",
+      "slug": "trello-review",
+      "articleType": "review",
+      "productType": "saas",
+      "category": "project-management",
+      "audience": "Freelancers, small teams and managers choosing a simple project tool",
+      "excerpt": "Trello review: how boards, automation and Power-Ups work, what each plan costs and includes, and when another project management tool fits better.",
+      "metaTitle": "Trello Review 2026: Pricing, Plans, Features & Limits",
+      "metaDescription": "Trello review 2026: boards, automation, Power-Ups and AI explained, with Free, Standard, Premium and Enterprise prices checked on trello.com.",
+      "author": "Toolora Editorial Team",
+      "reviewMethod": "research_based",
+      "disclosure": "Toolora.ai has no affiliate relationship with Trello or Atlassian and earns nothing from this page. If that changes, links will be clearly marked as sponsored.",
+      "sources": [
+        {
+          "url": "https://trello.com/pricing",
+          "title": "Trello pricing and plan comparison",
+          "checkedAt": "2026-11-05"
+        },
+        {
+          "url": "https://trello.com/",
+          "title": "Trello homepage (features)",
+          "checkedAt": "2026-11-05"
+        },
+        {
+          "url": "https://trello.com/platforms",
+          "title": "Trello apps and supported platforms",
+          "checkedAt": "2026-11-05"
+        }
+      ],
+      "faq": [
+        {
+          "question": "Is Trello free?",
+          "answer": "Yes. The Free plan costs $0 and covers up to 10 collaborators and up to 10 boards per Workspace, with 250 automation command runs a month (checked on trello.com/pricing, 5 Nov 2026)."
+        },
+        {
+          "question": "How much does Trello Premium cost?",
+          "answer": "Premium is $10 USD per user per month billed annually, or $12.50 billed monthly. Trello's FAQ says any Workspace can start a free Premium trial."
+        },
+        {
+          "question": "Does Trello have AI features?",
+          "answer": "Yes, on paid plans. The pricing page lists AI on Standard and Premium, including AI summarization, AI organization (checklists, due dates, merging cards) and AI-generated boards."
+        },
+        {
+          "question": "Did Toolora test Trello?",
+          "answer": "No. This is a research-based overview built from Trello's official pages. We have not run our own tests, so we do not give it a score."
+        }
+      ],
+      "bodyFile": "articles/trello-review.html",
+      "coverImageUrl": "/images/articles/trello-review-cover.jpg",
+      "coverImageAlt": "Illustration of a Trello-style board with To do, Doing and Done lists, plus automation and Power-Ups",
+      "coverImageCredit": "Illustration: Toolora.ai"
+    }
+  ]
+}

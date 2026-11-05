@@ -8,7 +8,8 @@ import BrandMark from "./site/BrandMark";
 import FilterChips from "./site/FilterChips";
 import PageHeader, { EmptyState, container } from "./site/PageHeader";
 import { findProduct, getProductOr404, listArticles, listProducts, type ProductDetail } from "@/lib/content";
-import ArticleCard from "./site/ArticleCard";
+import ArticleCard, { FeaturedCard } from "./site/ArticleCard";
+import ToolListCard from "./site/ToolListCard";
 import JsonLd from "./site/JsonLd";
 import { breadcrumbJsonLd, itemListJsonLd, pageMetadata, softwareJsonLd } from "@/lib/seo";
 import {
@@ -57,7 +58,68 @@ async function loadProducts(area: Area, category: string | undefined, raw: DirFi
       (!filters.platform || p.platforms.includes(filters.platform)) &&
       (!filters.useCase || p.useCases.some((u) => u.trim().toLowerCase() === filters.useCase)),
   );
-  return { items, filters, useCaseOptions };
+  // Sidebar ke liye: sirf woh pricing/platform options jo is scope ke products me sach me hain, count ke saath.
+  const count = (pick: (p: (typeof all)[number]) => string[]) => {
+    const m: Record<string, number> = {};
+    for (const p of all) for (const v of pick(p)) m[v] = (m[v] ?? 0) + 1;
+    return m;
+  };
+  const optionCounts = {
+    pricing: count((p) => [p.pricingModel]),
+    platform: count((p) => p.platforms),
+    useCase: count((p) => [...new Set(p.useCases.map((u) => u.trim().toLowerCase()))]),
+  };
+  const available = {
+    pricing: pricingOptions.filter((o) => optionCounts.pricing[o.value]),
+    platform: platformOptions.filter((o) => optionCounts.platform[o.value]),
+  };
+  return { items, filters, useCaseOptions, all, counts: optionCounts, available };
+}
+
+type Loaded = Awaited<ReturnType<typeof loadProducts>>;
+
+// Category page sidebar: compact, sticky, sirf relevant options.
+function FilterSidebar({ basePath, data }: { basePath: string; data: Loaded }) {
+  const { filters, useCaseOptions, counts, available, all } = data;
+  const active = Boolean(filters.pricing || filters.platform || filters.useCase);
+  return (
+    <aside className="space-y-5 lg:sticky lg:top-28 lg:self-start">
+      <div className="rounded-2xl border border-line bg-surface p-5 shadow-card">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="font-serif text-lg font-semibold">Filter tools</h2>
+          {active && (
+            <Link href={basePath} rel="nofollow" scroll={false} className="text-xs font-semibold text-accent hover:underline">
+              Clear all
+            </Link>
+          )}
+        </div>
+        {all.length === 0 ? (
+          <p className="text-sm text-muted">Filters appear once tools are listed in this category.</p>
+        ) : (
+          <div className="space-y-5">
+            <FilterChips stacked label="Pricing" param="pricing" options={available.pricing} counts={counts.pricing} current={filters.pricing} basePath={basePath} otherParams={filters} />
+            <FilterChips stacked label="Platform" param="platform" options={available.platform} counts={counts.platform} current={filters.platform} basePath={basePath} otherParams={filters} />
+            {useCaseOptions.length > 0 && (
+              <FilterChips stacked label="Use case" param="useCase" options={useCaseOptions} counts={counts.useCase} current={filters.useCase} basePath={basePath} otherParams={filters} />
+            )}
+          </div>
+        )}
+      </div>
+      <div className="hidden rounded-2xl border border-line bg-gradient-to-br from-accent/[0.06] to-label/[0.08] p-5 lg:block">
+        <p className="mb-3 flex items-center gap-2 text-sm font-bold">
+          <ShieldCheck className="h-4 w-4 text-accent" /> How we list tools
+        </p>
+        <ul className="space-y-2 text-sm text-muted">
+          <li className="flex gap-2"><span className="text-emerald-600">&#10003;</span> Facts from official pages only</li>
+          <li className="flex gap-2"><span className="text-emerald-600">&#10003;</span> Every fact has a check date</li>
+          <li className="flex gap-2"><span className="text-emerald-600">&#10003;</span> No paid rankings or made-up scores</li>
+        </ul>
+        <Link href="/how-we-review/" className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-accent hover:underline">
+          Our method <ArrowRight className="h-3.5 w-3.5" />
+        </Link>
+      </div>
+    </aside>
+  );
 }
 
 function Filters({ basePath, filters, useCaseOptions }: { basePath: string; filters: DirFilters; useCaseOptions: Opt[] }) {
@@ -136,11 +198,18 @@ export async function DirectoryIndex({ area, filters: raw }: { area: Area; filte
 async function CategoryHub({ area, slug, filters: raw }: { area: Area; slug: string; filters: DirFilters }) {
   const a = areas[area];
   const cat = a.categories.find((c) => c.slug === slug)!;
-  const [{ items, filters, useCaseOptions }, articles] = await Promise.all([
+  const [data, articles] = await Promise.all([
     loadProducts(area, slug, raw),
-    listArticles({ category: slug, limit: 6 }).then((r) => r.items),
+    listArticles({ category: slug, limit: 12 }).then((r) => r.items),
   ]);
+  const { items, filters } = data;
   const path = `${areaBase(area)}/${slug}/`;
+  // Har product ka review article (agar hai) -> "Read review" button.
+  const reviewFor = new Map<string, (typeof articles)[number]>();
+  for (const ar of articles) if (ar.articleType === "review") for (const id of ar.products ?? []) if (!reviewFor.has(id)) reviewFor.set(id, ar);
+  const shownArticles = articles.slice(0, 6);
+  const filtered = Boolean(filters.pricing || filters.platform || filters.useCase);
+  const pill = "inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5";
 
   return (
     <>
@@ -157,37 +226,76 @@ async function CategoryHub({ area, slug, filters: raw }: { area: Area; slug: str
         description={`${cat.description}, compared on pricing model, platforms and verified features — with the date each fact was checked.`}
         icon={slug}
       >
-        <p className="mt-5 text-sm text-ink-muted">
-          <span className="font-bold text-white">{items.length}</span> tool{items.length === 1 ? "" : "s"} ·{" "}
-          <span className="font-bold text-white">{articles.length}</span> article{articles.length === 1 ? "" : "s"}
-        </p>
+        <div className="mt-6 flex flex-wrap gap-2.5 text-sm">
+          <span className={`${pill} text-white`}>
+            <span className="font-bold">{data.all.length}</span> <span className="text-ink-muted">tool{data.all.length === 1 ? "" : "s"} listed</span>
+          </span>
+          <span className={`${pill} text-white`}>
+            <FileText className="h-4 w-4 text-label" /> <span className="font-bold">{articles.length}</span>{" "}
+            <span className="text-ink-muted">article{articles.length === 1 ? "" : "s"}</span>
+          </span>
+          <span className={`${pill} text-ink-muted`}>
+            <CalendarCheck className="h-4 w-4 text-emerald-400" /> Sourced, dated facts
+          </span>
+        </div>
       </PageHeader>
-      <div className={`${container} py-12`}>
-        <Filters basePath={`${areaBase(area)}/${slug}/`} filters={filters} useCaseOptions={useCaseOptions} />
-        {items.length ? (
-          <ProductGrid products={items} />
-        ) : (
-          <EmptyState
-            title={`No ${cat.name.toLowerCase()} tools listed yet`}
-            text="Products appear here once an editor has verified their details against official sources."
-          />
-        )}
-        {articles.length > 0 && (
-          <section className="mt-14">
-            <h2 className="mb-6 font-serif text-3xl font-bold tracking-tight">Latest {cat.name} articles</h2>
-            <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {articles.map((ar) => (
-                <li key={ar._id}>
-                  <ArticleCard article={ar} />
+
+      <div className={`${container} grid gap-8 py-12 lg:grid-cols-[280px_minmax(0,1fr)] xl:gap-10`}>
+        <FilterSidebar basePath={path} data={data} />
+
+        <div className="min-w-0">
+          <div className="mb-5">
+            <h2 className="font-serif text-3xl font-bold tracking-tight">{cat.name} tools</h2>
+            <p className="mt-1 text-sm text-muted">
+              {filtered ? `${items.length} of ${data.all.length} match your filters` : `Showing ${items.length} tool${items.length === 1 ? "" : "s"}`} · listed
+              alphabetically, not ranked
+            </p>
+          </div>
+
+          {items.length ? (
+            <ul className="space-y-4">
+              {items.map((p) => (
+                <li key={p._id}>
+                  <ToolListCard product={p} review={reviewFor.get(p._id)} />
                 </li>
               ))}
             </ul>
-          </section>
-        )}
-        <div className="mt-14">
-          <h2 className="mb-5 font-serif text-2xl font-bold tracking-tight">Other categories</h2>
-          <CategoryGrid base={areaBase(area)} categories={a.categories.filter((c) => c.slug !== slug)} />
+          ) : (
+            <EmptyState
+              title={filtered ? "No tools match these filters" : `No ${cat.name.toLowerCase()} tools listed yet`}
+              text={filtered ? "Try removing a filter." : "Products appear here once an editor has verified their details against official sources."}
+            />
+          )}
+
+          {data.all.length > 0 && data.all.length < 4 && !filtered && (
+            <p className="mt-4 flex items-start gap-2.5 rounded-xl border border-dashed border-line px-4 py-3 text-sm text-muted">
+              <Info className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+              More {cat.name} tools are being researched. We add each one only after checking its official pages.
+            </p>
+          )}
+
+          {shownArticles.length > 0 && (
+            <section className="mt-14">
+              <h2 className="mb-6 font-serif text-3xl font-bold tracking-tight">Latest {cat.name} articles</h2>
+              {shownArticles.length === 1 ? (
+                <FeaturedCard article={shownArticles[0]} />
+              ) : (
+                <ul className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                  {shownArticles.map((ar) => (
+                    <li key={ar._id}>
+                      <ArticleCard article={ar} />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          )}
         </div>
+      </div>
+
+      <div className={`${container} pb-16`}>
+        <h2 className="mb-5 font-serif text-2xl font-bold tracking-tight">Other categories</h2>
+        <CategoryGrid base={areaBase(area)} categories={a.categories.filter((c) => c.slug !== slug)} />
       </div>
     </>
   );

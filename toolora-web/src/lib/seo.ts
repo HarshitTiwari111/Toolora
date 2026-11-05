@@ -112,7 +112,7 @@ export function articleJsonLd(a: {
     description: a.description,
     mainEntityOfPage: absUrl(a.path),
     url: absUrl(a.path),
-    ...(a.image ? { image: [a.image] } : {}),
+    ...(a.image ? { image: [absUrl(a.image)] } : {}),
     ...(a.publishedAt ? { datePublished: a.publishedAt } : {}),
     ...(a.updatedAt ? { dateModified: a.updatedAt } : {}),
     author: a.author ? { "@type": "Person", name: a.author } : { "@id": absUrl("/#organization") },

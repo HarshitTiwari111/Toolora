@@ -69,6 +69,40 @@ function CompareTable({ products }: { products: PublicProduct[] }) {
   );
 }
 
+// Review page ka "At a glance" card (product ke verified fields se, koi rating nahi).
+function AtAGlance({ p }: { p: PublicProduct }) {
+  const rows: { label: string; value: string }[] = [
+    { label: "Pricing", value: pricingLabels[p.pricingModel] },
+    { label: "Best for", value: p.useCases.join(", ") || "—" },
+    { label: "Platforms", value: p.platforms.map(platformName).join(", ") || "—" },
+    { label: "Facts checked", value: fmtDate(p.lastVerifiedAt) ?? "Not yet" },
+  ];
+  return (
+    <aside aria-label={`${p.brandName} at a glance`} className="mb-10 max-w-[840px] overflow-hidden rounded-2xl border border-line bg-surface shadow-card">
+      <div className="flex flex-wrap items-center gap-4 border-b border-line bg-gradient-to-r from-accent/10 via-transparent to-label/10 px-5 py-4">
+        <BrandMark name={p.brandName} />
+        <div className="min-w-0 flex-1">
+          <p className="text-[11px] font-extrabold uppercase tracking-widest text-accent">At a glance</p>
+          <p className="font-serif text-xl font-semibold leading-tight">{p.brandName}</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Link href={profileUrl(p)} className="text-sm font-medium text-accent hover:underline">Full profile</Link>
+          <ProductCta p={p} compact />
+        </div>
+      </div>
+      {p.shortDescription && <p className="px-5 pt-4 text-[15px] leading-relaxed text-muted">{p.shortDescription}</p>}
+      <dl className="grid gap-px p-5 pt-4 sm:grid-cols-2">
+        {rows.map((r) => (
+          <div key={r.label} className="flex gap-3 border-b border-line py-2.5 text-sm last:border-0 sm:[&:nth-last-child(2)]:border-0">
+            <dt className="w-28 shrink-0 font-semibold text-muted">{r.label}</dt>
+            <dd className="font-medium">{r.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </aside>
+  );
+}
+
 export default function ArticleView({
   article: a,
   sectionLabel,
@@ -180,6 +214,8 @@ export default function ArticleView({
               <CompareTable products={products} />
             </div>
           )}
+
+          {a.articleType === "review" && products.length === 1 && <AtAGlance p={products[0]} />}
 
           <div className="article-body" dangerouslySetInnerHTML={{ __html: html }} />
 

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600"><defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#121420"/><stop offset=".6" stop-color="#1b1e2d"/><stop offset="1" stop-color="#2b2163"/></linearGradient>
+  <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f46e5"/><stop offset="1" stop-color="#7c3aed"/></linearGradient>
+  <linearGradient id="amber" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fde68a"/><stop offset="1" stop-color="#f59e0b"/></linearGradient>
+  <radialGradient id="glow" cx=".8" cy=".2" r=".7"><stop offset="0" stop-color="#7c3aed" stop-opacity=".45"/><stop offset="1" stop-color="#7c3aed" stop-opacity="0"/></radialGradient>
+  <filter id="sh" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#000" flood-opacity=".35"/></filter>
+  <filter id="sh2" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#10121e" flood-opacity=".12"/></filter>
+</defs>
+<rect width="1200" height="600" rx="28" fill="#faf8f4"/>
+<text x="40" y="70" font-family="Inter, 'Segoe UI', Roboto, Arial, sans-serif" font-size="15" font-weight="800" letter-spacing="3" fill="#4f46e5">OTTER.AI PLAN LIMITS</text>
+<text x="40" y="112" font-family="Georgia, 'Times New Roman', serif" font-size="36" font-weight="700" fill="#121420">How much each plan lets you record</text>
+<text x="170" y="170" font-family="Inter, 'Segoe UI', Roboto, Arial, sans-serif" font-size="16" font-weight="700" fill="#5a6070">Meeting transcription per month</text>
+<text x="690" y="170" font-family="Inter, 'Segoe UI', Roboto, Arial, sans-serif" font-size="16" font-weight="700" fill="#5a6070">Max length of one conversation</text>
+<text x="40" y="230" font-family="Inter, 'Segoe UI', Roboto, Arial, sans-serif" font-size="22" font-weight="800" fill="#121420">Basic</text>
+<rect x="170" y="198" width="470" height="40" rx="12" fill="#efece4"/>
+<rect x="170" y="198" width="100" height="40" rx="12" fill="url(#brand)"/>
+<text x="282" y="225" text-anchor="start" font-family="Inter, 'Segoe UI', Roboto, Arial, sans-serif" font-size="18" font-weight="800" fill="#121420">300 min</text>
+<rect x="690" y="198" width="470" height="40" rx="12" fill="#efece4"/>
+<rect x="690" y="198" width="59" height="40" rx="12" fill="url(#amber)"/>
+<text x="761" y="225" text-anchor="start" font-family="Inter, 'Segoe UI', Roboto, Arial, sans-serif" font-size="18" font-weight="800" fill="#121420">30 min</text><text x="40" y="340" font-family="Inter, 'Segoe UI', Roboto, Arial, sans-serif" font-size="22" font-weight="800" fill="#121420">Pro</text>
+<rect x="170" y="308" width="470" height="40" rx="12" fill="#efece4"/>
+<rect x="170" y="308" width="400" height="40" rx="12" fill="url(#brand)"/>
+<text x="556" y="335" text-anchor="end" font-family="Inter, 'Segoe UI', Roboto, Arial, sans-serif" font-size="18" font-weight="800" fill="#fff">1,200 min</text>
+<rect x="690" y="308" width="470" height="40" rx="12" fill="#efece4"/>
+<rect x="690" y="308" width="176" height="40" rx="12" fill="url(#amber)"/>
+<text x="878" y="335" text-anchor="start" font-family="Inter, 'Segoe UI', Roboto, Arial, sans-serif" font-size="18" font-weight="800" fill="#121420">90 min</text><text x="40" y="450" font-family="Inter, 'Segoe UI', Roboto, Arial, sans-serif" font-size="22" font-weight="800" fill="#121420">Business</text>
+<rect x="170" y="418" width="470" height="40" rx="12" fill="#efece4"/>
+<rect x="170" y="418" width="470" height="40" rx="12" fill="url(#brand)"/>
+<text x="626" y="445" text-anchor="end" font-family="Inter, 'Segoe UI', Roboto, Arial, sans-serif" font-size="18" font-weight="800" fill="#fff">Unlimited</text>
+<rect x="690" y="418" width="470" height="40" rx="12" fill="#efece4"/>
+<rect x="690" y="418" width="470" height="40" rx="12" fill="url(#amber)"/>
+<text x="1146" y="445" text-anchor="end" font-family="Inter, 'Segoe UI', Roboto, Arial, sans-serif" font-size="18" font-weight="800" fill="#121420">4 hours</text>
+<text x="40" y="570" font-family="Inter, 'Segoe UI', Roboto, Arial, sans-serif" font-size="14" fill="#5a6070">Source: otter.ai/pricing comparison table, checked 5 Nov 2026. Bars not to exact scale for "Unlimited".</text>
+</svg>

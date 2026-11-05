@@ -9,6 +9,8 @@ export default function FilterChips({
   current,
   basePath,
   otherParams,
+  counts,
+  stacked = false,
 }: {
   label: string;
   param: string;
@@ -16,6 +18,10 @@ export default function FilterChips({
   current?: string;
   basePath: string;
   otherParams: Record<string, string | undefined>;
+  // value -> kitne tools (sidebar me chhota number)
+  counts?: Record<string, number>;
+  // Sidebar: label upar, chips neeche
+  stacked?: boolean;
 }) {
   const href = (value?: string) => {
     const q = new URLSearchParams();
@@ -25,21 +31,28 @@ export default function FilterChips({
     return s ? `${basePath}?${s}` : basePath;
   };
   const chip = (active: boolean) =>
-    `rounded-full border px-3 py-1.5 text-sm transition ${
-      active ? "border-accent bg-accent-soft text-accent" : "border-line bg-surface text-muted hover:text-foreground"
+    `inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm transition ${
+      active ? "border-accent bg-accent text-white shadow-sm" : "border-line bg-surface text-muted hover:border-accent/50 hover:text-foreground"
     }`;
+  const badge = (active: boolean) => `rounded-full px-1.5 text-[11px] font-semibold ${active ? "bg-white/25 text-white" : "bg-surface-2 text-muted"}`;
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <span className="mr-1 text-xs font-semibold uppercase tracking-wide text-muted">{label}</span>
-      <Link href={href()} rel="nofollow" scroll={false} className={chip(!current)}>
-        All
-      </Link>
-      {options.map((o) => (
-        <Link key={o.value} href={href(o.value)} rel="nofollow" scroll={false} className={chip(current === o.value)}>
-          {o.label}
+    <div className={stacked ? "space-y-2.5" : "flex flex-wrap items-center gap-2"}>
+      <span className={`block text-xs font-bold uppercase tracking-widest ${stacked ? "text-foreground" : "mr-1 text-muted"}`}>{label}</span>
+      <div className="flex flex-wrap gap-2">
+        <Link href={href()} rel="nofollow" scroll={false} className={chip(!current)}>
+          All
         </Link>
-      ))}
+        {options.map((o) => {
+          const active = current === o.value;
+          return (
+            <Link key={o.value} href={href(o.value)} rel="nofollow" scroll={false} className={chip(active)}>
+              {o.label}
+              {counts?.[o.value] !== undefined && <span className={badge(active)}>{counts[o.value]}</span>}
+            </Link>
+          );
+        })}
+      </div>
     </div>
   );
 }

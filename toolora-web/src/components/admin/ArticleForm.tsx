@@ -53,7 +53,7 @@ export default function ArticleForm({ article, products }: { article?: Article; 
           </select>
         </Field>
         <Field label="Cover image URL" hint="https://… (Unsplash, Cloudinary, etc.). Size ~1600×900">
-          <input name="coverImageUrl" type="url" defaultValue={a?.coverImageUrl} className={inputCls} />
+          <input name="coverImageUrl" type="text" placeholder="https://… or /images/articles/name.png" defaultValue={a?.coverImageUrl} className={inputCls} />
         </Field>
         <Field label="Cover image alt text" hint="Image me kya hai — SEO + accessibility (image ho to zaroori)">
           <input name="coverImageAlt" maxLength={200} defaultValue={a?.coverImageAlt} className={inputCls} />

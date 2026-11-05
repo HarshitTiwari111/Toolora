@@ -30,10 +30,25 @@ export function productPath(p: { productType: string; slug: string }) {
   return `${p.productType === "saas" ? "/saas" : "/ai-tools"}/${p.slug}/`;
 }
 
+// Editorial rules (docs/content/WRITING-GUIDE.md): body max 1500 words, kam se kam 2 internal links.
+export const MAX_ARTICLE_WORDS = 1500;
+export const MIN_INTERNAL_LINKS = 2;
+
+export function articleWordCount(html?: string | null) {
+  return (html ?? "").replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
+}
+
+export function internalLinkCount(html?: string | null) {
+  return ((html ?? "").match(/<a\s[^>]*href=["']\/(?!\/)/gi) ?? []).length;
+}
+
 // Publish se pehle ye sab pass hona chahiye. Fail hone par list return hoti hai.
 export function publishGateFailures(a: ArticleLike): string[] {
   const fails: string[] = [];
   if (!a.body?.trim()) fails.push("Body is empty");
+  const words = articleWordCount(a.body);
+  if (words > MAX_ARTICLE_WORDS) fails.push(`Body is ${words} words (max ${MAX_ARTICLE_WORDS})`);
+  if (a.body?.trim() && internalLinkCount(a.body) < MIN_INTERNAL_LINKS) fails.push(`Add at least ${MIN_INTERNAL_LINKS} internal links (/category/, /reviews/... pages)`);
   if (!a.metaTitle?.trim()) fails.push("Meta title missing");
   if (!a.metaDescription?.trim()) fails.push("Meta description missing");
   if (!a.sources?.length) fails.push("At least one source URL required");

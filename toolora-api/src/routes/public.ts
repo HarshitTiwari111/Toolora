@@ -60,7 +60,7 @@ publicRouter.get("/articles", async (req, res) => {
   if (typeof req.query.category === "string" && /^[a-z0-9-]{1,40}$/.test(req.query.category)) filter.category = req.query.category;
 
   const [items, total] = await Promise.all([
-    Article.find(filter).select("title slug articleType productType excerpt category coverImageUrl coverImageAlt author publishedAt updatedAt").sort({ publishedAt: -1 }).skip(skip).limit(limit).lean(),
+    Article.find(filter).select("title slug articleType productType excerpt category coverImageUrl coverImageAlt author publishedAt updatedAt products").sort({ publishedAt: -1 }).skip(skip).limit(limit).lean(),
     Article.countDocuments(filter),
   ]);
   res.json({ items: items.map((a) => ({ ...a, url: articlePath(a) })), total, page, limit });
