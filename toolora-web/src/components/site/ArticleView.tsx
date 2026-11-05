@@ -6,7 +6,8 @@ import { areaBase, articleCategory, articleTypeLabels, categoryName, fmtDate, in
 import Breadcrumbs, { type Crumb } from "../Breadcrumbs";
 import ArticleCard, { Cover, NumberedList } from "./ArticleCard";
 import BrandMark from "./BrandMark";
-import { container } from "./PageHeader";
+// Reference jaisa: header, cover, body aur sidebar ek hi centered column me.
+const wrap = "mx-auto w-full max-w-[1228px] px-4 sm:px-6";
 
 const profileUrl = (p: PublicProduct) => p.url ?? `${areaBase(p.productType)}/${p.slug}/`;
 
@@ -129,16 +130,22 @@ export default function ArticleView({
               By <span className="font-semibold text-foreground">{author}</span>
             </span>
             <span aria-hidden>·</span>
-            <span>
-              {updated ? (
-                <>
+            {published && (
+              <>
+                <span>
+                  Published <time dateTime={a.publishedAt ?? undefined}>{published}</time>
+                </span>
+                <span aria-hidden>·</span>
+              </>
+            )}
+            {updated && updated !== published && (
+              <>
+                <span>
                   Updated <time dateTime={a.updatedAt}>{updated}</time>
-                </>
-              ) : (
-                <>Published {published}</>
-              )}
-            </span>
-            <span aria-hidden>·</span>
+                </span>
+                <span aria-hidden>·</span>
+              </>
+            )}
             <span>{minutes} min read</span>
             <span aria-hidden>·</span>
             <span className="inline-flex items-center gap-1">
@@ -156,7 +163,7 @@ export default function ArticleView({
       </figure>
 
       {/* ---------- Body + sidebar ---------- */}
-      <div className={`${container} grid gap-10 py-10 lg:grid-cols-[minmax(0,1fr)_300px] xl:gap-14`}>
+      <div className={`${wrap} grid gap-10 py-10 lg:grid-cols-[minmax(0,1fr)_300px] xl:gap-12`}>
         <div className="min-w-0">
           {a.disclosure && (
             <p className="mb-8 flex max-w-[840px] gap-2.5 rounded-xl border border-line bg-surface px-4 py-3 text-sm text-muted">
@@ -315,7 +322,7 @@ export default function ArticleView({
 
       {related.length > 0 && (
         <section className="border-t border-line bg-surface py-14">
-          <div className={container}>
+          <div className={wrap}>
             <h2 className="mb-8 font-serif text-3xl font-semibold tracking-tight">Related guides</h2>
             <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {related.map((r) => (

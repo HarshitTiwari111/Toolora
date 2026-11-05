@@ -135,7 +135,7 @@ body {
   max-width: 840px;
 }
 .article-body > * + * { margin-top: 1.1em; }
-.article-body h2 { margin-top: 2em; font-size: 1.6rem; line-height: 1.3; font-weight: 700; letter-spacing: -0.01em; }
+.article-body h2 { margin-top: 1.9em; font-size: 1.875rem; line-height: 1.3; font-weight: 700; letter-spacing: -0.01em; }
 .article-body h3 { margin-top: 1.6em; font-size: 1.25rem; font-weight: 650; }
 .article-body h4 { margin-top: 1.4em; font-weight: 650; }
 .article-body h2:first-child, .article-body h3:first-child { margin-top: 0; }
@@ -150,7 +150,7 @@ body {
 .article-body blockquote { border-left: 4px solid var(--label, #f5b83d); padding: 0.2em 0 0.2em 1em; font-style: italic; font-weight: 600; color: var(--foreground); }
 .article-body hr { border-color: var(--line); margin: 2em 0; }
 .article-body code { font-family: var(--font-geist-mono), ui-monospace, monospace; font-size: 0.9em; background: var(--surface-2); padding: 0.15em 0.4em; border-radius: 6px; }
-.article-body pre { background: var(--surface-2); padding: 1em; border-radius: 12px; overflow-x: auto; }
+.article-body pre { background: var(--ink, #0e1116); color: #e8eaef; padding: 1.1em 1.25em; border-radius: 12px; overflow-x: auto; font-size: 0.95rem; line-height: 1.75; }
 .article-body pre code { background: none; padding: 0; }
 .article-body img { border-radius: 16px; max-width: 100%; height: auto; }
 .article-body figcaption { margin-top: 0.4em; font-size: 0.8em; color: var(--muted); }
