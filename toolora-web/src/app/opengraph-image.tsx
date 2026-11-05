@@ -5,6 +5,8 @@ export const alt = "Toolora.ai — AI tools reviews, comparisons and guides";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+const MARK = `data:image/svg+xml;base64,${Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">\n  <defs>\n    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">\n      <stop offset="0" stop-color="#4f46e5"/>\n      <stop offset=".55" stop-color="#7c3aed"/>\n      <stop offset="1" stop-color="#a21caf"/>\n    </linearGradient>\n    <linearGradient id="hl" x1="0" y1="0" x2="0" y2="1">\n      <stop offset="0" stop-color="#fff" stop-opacity=".28"/>\n      <stop offset="1" stop-color="#fff" stop-opacity="0"/>\n    </linearGradient>\n    <linearGradient id="sp" x1="0" y1="0" x2="1" y2="1">\n      <stop offset="0" stop-color="#fde68a"/>\n      <stop offset="1" stop-color="#f59e0b"/>\n    </linearGradient>\n  </defs>\n  <rect width="40" height="40" rx="12" fill="url(#bg)"/>\n  <path d="M0 12A12 12 0 0 1 12 0h16a12 12 0 0 1 12 12v6H0z" fill="url(#hl)"/>\n  <rect x="8.5" y="10.5" width="15.5" height="5.2" rx="2.6" fill="#fff"/>\n  <rect x="13.65" y="10.5" width="5.2" height="19.5" rx="2.6" fill="#fff"/>\n  <path d="M29.5 7.6Q30 13.1 35.4 13.6Q30 14.1 29.5 19.6Q29 14.1 23.6 13.6Q29 13.1 29.5 7.6Z" fill="url(#sp)"/>\n</svg>`).toString("base64")}`;
+
 export default function OgImage() {
   return new ImageResponse(
     (
@@ -21,25 +23,12 @@ export default function OgImage() {
           fontFamily: "sans-serif",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-          <div
-            style={{
-              width: 72,
-              height: 72,
-              borderRadius: 20,
-              background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 44,
-              fontWeight: 800,
-            }}
-          >
-            T
-          </div>
-          <div style={{ fontSize: 44, fontWeight: 800 }}>Toolora</div>
-          <div style={{ fontSize: 26, fontWeight: 800, background: "#f5b83d", color: "#121420", padding: "4px 12px", borderRadius: 10 }}>
-            .ai
+        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+          {/* eslint-disable-next-line @next/next/no-img-element -- ImageResponse ke andar plain img hi chalta hai */}
+          <img src={MARK} width={76} height={76} alt="" />
+          <div style={{ display: "flex", fontSize: 52, fontWeight: 700, letterSpacing: -1 }}>
+            <span>Toolora</span>
+            <span style={{ color: "#fbbf24", marginLeft: -6 }}>.ai</span>
           </div>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>

@@ -1,4 +1,5 @@
 import { AlertCircle } from "lucide-react";
+import { LogoMark } from "@/components/Logo";
 import { loginAction } from "../actions";
 import { EmailInput, PasswordInput, SubmitButton } from "@/components/admin/LoginFields";
 
@@ -39,7 +40,7 @@ export default async function LoginPage({ searchParams }: Props) {
         {/* Right form */}
         <section className="px-7 py-12 sm:px-12 md:py-16">
           <div className="mb-8 flex items-center justify-center gap-2 md:hidden">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#1e2a44] font-bold text-[#7c8cff]">T</span>
+            <LogoMark className="h-9 w-9" />
             <span className="text-lg font-bold text-slate-900">
               Toolora<span className="text-blue-600">.ai</span>
             </span>
