@@ -3,7 +3,7 @@ import ArticleView from "./site/ArticleView";
 import JsonLd from "./site/JsonLd";
 import { findArticle, getArticleOr404, listArticles } from "@/lib/content";
 import { articleCategory } from "@/lib/labels";
-import { articleJsonLd, breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
+import { articleJsonLd, breadcrumbJsonLd, faqJsonLd, pageMetadata } from "@/lib/seo";
 import { sections, type SectionKey } from "@/lib/sections";
 
 // Single article page (/reviews/{slug}/ ...).
@@ -37,6 +37,7 @@ export async function SectionItemPage({ section, slug }: { section: SectionKey; 
             articleType: article.articleType,
           }),
           breadcrumbJsonLd([...crumbs, { name: article.title, path: article.url }]),
+          ...(article.faq.length ? [faqJsonLd(article.faq)] : []),
         ]}
       />
       <ArticleView article={article} sectionLabel={s.label} sectionHref={`/${section}/`} pageType={s.pageType} related={related} latest={latest} />

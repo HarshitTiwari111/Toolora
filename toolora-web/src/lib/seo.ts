@@ -85,6 +85,19 @@ export function websiteJsonLd(): Json {
   };
 }
 
+// FAQ section ka structured data (sirf wahi Q&A jo page par dikhte hain).
+export function faqJsonLd(items: { question: string; answer: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
+  };
+}
+
 export function breadcrumbJsonLd(items: { name: string; path: string }[]): Json {
   const all = [{ name: "Home", path: "/" }, ...items];
   return {
