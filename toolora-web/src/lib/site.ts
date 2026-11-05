@@ -3,7 +3,7 @@
 export const siteConfig = {
   name: "Toolora.ai",
   description:
-    "Discover, compare and understand AI tools and SaaS products with sourced, dated facts.",
+    "Reviews and comparisons of AI tools and business software, with prices taken from official pages.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   // Jab tak "true" na ho, poori site noindex rahegi (staging safety).
   indexable: process.env.NEXT_PUBLIC_SITE_INDEXABLE === "true",

@@ -2,6 +2,14 @@ import Link from "next/link";
 import type { ArticleSummary } from "@/lib/content";
 import { articleCategory, articleTypeLabels, fmtDate, initials } from "@/lib/labels";
 import IllustratedCover from "./IllustratedCover";
+import { categoryPhoto, photoSrcSet, photoUrl } from "@/lib/photos";
+
+// Unsplash URL ho to alag widths ka srcset (mobile par chhoti file).
+function unsplashSrcSet(url: string) {
+  if (!url.startsWith("https://images.unsplash.com/")) return undefined;
+  const base = url.split("?")[0];
+  return [480, 800, 1200, 1600].map((w) => `${base}?auto=format&fit=crop&w=${w}&h=${Math.round((w * 9) / 16)}&q=75 ${w}w`).join(", ");
+}
 
 // Cover image ya (image na ho to) category icon wala gradient placeholder.
 export function Cover({
@@ -18,13 +26,16 @@ export function Cover({
   big?: boolean;
 }) {
   const cat = articleCategory(a);
+  // Khud ki cover image na ho to category ki Unsplash photo (har card alag dikhe).
+  const photo = a.coverImageUrl ? undefined : categoryPhoto(cat?.slug);
   return (
     <div className={`relative overflow-hidden bg-ink ${className}`}>
-      {a.coverImageUrl ? (
+      {a.coverImageUrl || photo ? (
         // eslint-disable-next-line @next/next/no-img-element -- editor kisi bhi host ki image URL de sakta hai
         <img
-          src={a.coverImageUrl}
-          alt={a.coverImageAlt || a.title}
+          src={a.coverImageUrl || photoUrl(photo!, 1200, 675)}
+          srcSet={a.coverImageUrl ? unsplashSrcSet(a.coverImageUrl) : photoSrcSet(photo!)}
+          alt={a.coverImageUrl ? a.coverImageAlt || a.title : photo!.alt}
           sizes={sizes}
           loading={priority ? "eager" : "lazy"}
           fetchPriority={priority ? "high" : "auto"}
@@ -33,6 +44,9 @@ export function Cover({
         />
       ) : (
         <IllustratedCover category={cat?.slug} label={cat?.name.replace(/^AI /, "")} big={big} className="transition duration-500 group-hover:scale-[1.03]" />
+      )}
+      {(a.coverImageUrl || photo) && (
+        <span aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/55 via-transparent to-ink/25" />
       )}
       {cat && (
         <span className="absolute left-3 top-3 rounded-md bg-ink/85 px-2 py-1 text-[11px] font-bold uppercase tracking-wider text-white backdrop-blur">

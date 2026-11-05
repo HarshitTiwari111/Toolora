@@ -5,6 +5,14 @@ import { findArticle, getArticleOr404, listArticles } from "@/lib/content";
 import { articleCategory } from "@/lib/labels";
 import { articleJsonLd, breadcrumbJsonLd, faqJsonLd, pageMetadata } from "@/lib/seo";
 import { sections, type SectionKey } from "@/lib/sections";
+import { categoryPhoto, photoUrl } from "@/lib/photos";
+
+// Share image: article ki cover, warna category ki Unsplash photo (1200x630).
+function shareImage(a: { coverImageUrl?: string; category?: string; productType: string }) {
+  if (a.coverImageUrl) return a.coverImageUrl;
+  const p = categoryPhoto(a.category);
+  return p ? photoUrl(p, 1200, 630) : undefined;
+}
 
 // Single article page (/reviews/{slug}/ ...).
 export async function SectionItemPage({ section, slug }: { section: SectionKey; slug: string }) {
@@ -29,7 +37,7 @@ export async function SectionItemPage({ section, slug }: { section: SectionKey; 
             title: article.title,
             description: article.metaDescription || article.excerpt,
             path: article.url,
-            image: article.coverImageUrl || undefined,
+            image: shareImage(article),
             author: article.author,
             reviewer: article.reviewer,
             publishedAt: article.publishedAt,
@@ -55,8 +63,8 @@ export async function sectionItemMetadata(section: SectionKey, slug: string): Pr
     description: a.metaDescription || a.excerpt,
     path: a.url,
     type: "article",
-    image: a.coverImageUrl || undefined,
-    imageAlt: a.coverImageAlt || undefined,
+    image: shareImage(a),
+    imageAlt: a.coverImageAlt || categoryPhoto(a.category)?.alt || undefined,
     publishedTime: a.publishedAt,
     modifiedTime: a.updatedAt,
   });

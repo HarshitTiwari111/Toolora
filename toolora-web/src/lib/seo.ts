@@ -34,7 +34,7 @@ export function pageMetadata({
   // Image na ho to default share image (app/opengraph-image.tsx).
   const images = image
     ? [{ url: image, alt: imageAlt ?? title }]
-    : [{ url: "/opengraph-image/", width: 1200, height: 630, alt: `${siteConfig.name} — AI tools reviews, comparisons and guides` }];
+    : [{ url: "/opengraph-image/", width: 1200, height: 630, alt: `${siteConfig.name}: AI tool reviews, comparisons and guides` }];
   return {
     title: absoluteTitle ? { absolute: title } : title,
     description,

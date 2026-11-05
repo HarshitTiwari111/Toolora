@@ -13,9 +13,9 @@ import { aiCategories, saasCategories, siteConfig } from "@/lib/site";
 import { tone } from "@/lib/theme";
 
 export const metadata: Metadata = pageMetadata({
-  title: `${siteConfig.name} — AI tools reviews, comparisons and guides`,
+  title: `${siteConfig.name}: AI tool reviews, comparisons and guides`,
   description:
-    "Research-based reviews, comparisons, alternatives and guides for AI tools and SaaS. Every pricing and feature claim links to its source and shows when it was checked.",
+    "Reviews, comparisons and buying guides for AI tools and business software. Prices are copied from official pages and dated.",
   path: "/",
   absoluteTitle: true,
 });
@@ -37,20 +37,20 @@ const tiles = [
 ];
 
 const GOALS: { key: string; label: string; cat: string; summary: string }[] = [
-  { key: "write", label: "Write content", cat: "writing", summary: "Draft blogs, ads and emails faster — without losing your voice." },
-  { key: "video", label: "Make videos", cat: "video", summary: "Create, edit and repurpose video with AI, from scripts to captions." },
-  { key: "images", label: "Create images", cat: "image-generation", summary: "Generate visuals, product shots and brand assets with AI." },
-  { key: "automate", label: "Automate work", cat: "automation", summary: "Connect your apps and let AI agents handle repetitive workflows." },
-  { key: "market", label: "Market & sell", cat: "marketing", summary: "Find leads, personalise outreach and run campaigns with AI help." },
-  { key: "support", label: "Support customers", cat: "chatbots", summary: "Answer customers 24/7 with AI chat that hands off to humans." },
-  { key: "code", label: "Code faster", cat: "coding", summary: "Pair-program with AI assistants and ship features in less time." },
-  { key: "meetings", label: "Run meetings", cat: "productivity", summary: "Record, summarise and act on meetings without taking notes." },
+  { key: "write", label: "Write content", cat: "writing", summary: "Get a first draft of a post, ad or email, then edit it into your own words." },
+  { key: "video", label: "Make videos", cat: "video", summary: "Cut clips, add captions and turn one long video into several short ones." },
+  { key: "images", label: "Create images", cat: "image-generation", summary: "Make product shots, thumbnails and social graphics from a text prompt." },
+  { key: "automate", label: "Automate work", cat: "automation", summary: "Hand off the copy-paste jobs between your apps." },
+  { key: "market", label: "Market & sell", cat: "marketing", summary: "Write outreach, sort leads and plan campaigns." },
+  { key: "support", label: "Support customers", cat: "chatbots", summary: "Answer common questions at night and pass the hard ones to a person." },
+  { key: "code", label: "Code faster", cat: "coding", summary: "Autocomplete, explain unfamiliar code and write tests." },
+  { key: "meetings", label: "Run meetings", cat: "productivity", summary: "Get a transcript and a list of next steps after every call." },
 ];
 
 const METHOD = [
-  { n: "01", title: "Official sources", text: "Pricing, plans and features come from the vendor's own pages — linked next to each fact." },
-  { n: "02", title: "Dated facts", text: "Every fact shows when we checked it, and pages are queued for regular re-checks." },
-  { n: "03", title: "Human approval", text: "AI may help draft; an editor verifies and approves every page before it goes live." },
+  { n: "01", title: "Official sources", text: "We read the vendor's pricing page and docs, and link to them." },
+  { n: "02", title: "Dated facts", text: "Each price shows the day we checked it. Prices change, so we re-check." },
+  { n: "03", title: "Human approval", text: "AI can help with a draft. A person checks the facts and publishes." },
 ];
 
 function SectionHead({
@@ -134,14 +134,14 @@ export default async function Home() {
         <div aria-hidden className="pointer-events-none absolute -bottom-56 -left-20 h-[30rem] w-[30rem] rounded-full bg-label/10 blur-[110px]" />
         <div className={`${container} relative pb-20 pt-14 sm:pt-20`}>
           <p className="mb-6 inline-flex rounded-full border border-label/50 bg-label/10 px-3 py-1 text-xs font-semibold text-label">
-            Independent reviews · AI-first guides · Sourced facts
+            AI tools and SaaS, reviewed
           </p>
-          <h1 className="max-w-4xl font-serif text-[2.6rem] font-semibold leading-[1.05] tracking-tight sm:text-[4.2rem]">
-            Find, compare &amp; choose the right AI tools.
+          <h1 className="max-w-4xl text-balance font-serif text-[2.6rem] font-semibold leading-[1.05] tracking-tight sm:text-[4.2rem]">
+            Pick the AI tool that fits the job.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-muted">
-            Practical reviews, comparisons and guides for AI tools and SaaS — every price and feature linked to its source, with the
-            date we checked it.
+            What each tool does, what it really costs and who it suits. Start with a category, or search for a tool you already
+            have in mind.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link href="/ai-tools/" className="inline-flex items-center gap-2 rounded-full bg-label px-6 py-3 font-bold text-ink transition hover:brightness-95">
@@ -198,7 +198,7 @@ export default async function Home() {
               ))}
             </ul>
           ) : (
-            <p className="rounded-2xl border border-dashed border-line bg-surface p-10 text-center text-muted">The first articles are being researched and reviewed.</p>
+            <p className="rounded-2xl border border-dashed border-line bg-surface p-10 text-center text-muted">No articles yet. The first ones are on the way.</p>
           )}
           {(guides.length > 0 || reviews.length > 0) && (
             <div className="mt-14 grid gap-6 lg:grid-cols-2">
@@ -212,7 +212,7 @@ export default async function Home() {
       {/* ---------- Goal picker ---------- */}
       <section className="border-y border-line bg-surface py-20">
         <div className={container}>
-          <SectionHead eyebrow="Personalised path" title="What are you trying to do?" text="Pick a goal. We'll point you to the right guides, tools and categories." />
+          <SectionHead eyebrow="Personalised path" title="What are you trying to do?" text="Choose what you want to get done. We'll show you where to start." />
           <GoalPicker goals={goals} />
         </div>
       </section>
@@ -223,8 +223,8 @@ export default async function Home() {
           <div className={container}>
             <SectionHead
               eyebrow="Reviews"
-              title="Honest picks, no paid rankings"
-              text="Transparent criteria, real trade-offs and no invented scores. Prices link to official pages so they're always checkable."
+              title="Recent reviews"
+              text="What works, what doesn't, and the plan most people end up on."
               link={{ href: "/reviews/", label: "All reviews" }}
             />
             <ol className="grid gap-4 md:grid-cols-2">
@@ -255,10 +255,10 @@ export default async function Home() {
         <div className={`${container} grid items-center gap-12 lg:grid-cols-[1fr_1.15fr]`}>
           <div>
             <p className="mb-2 text-xs font-bold uppercase tracking-widest text-label">How we review</p>
-            <h2 className="font-serif text-3xl font-semibold tracking-tight sm:text-[2.6rem] sm:leading-[1.15]">Facts you can check, not scores we invented</h2>
+            <h2 className="font-serif text-3xl font-semibold tracking-tight sm:text-[2.6rem] sm:leading-[1.15]">Why you can check our numbers</h2>
             <p className="mt-4 max-w-xl leading-relaxed text-ink-muted">
-              Most &ldquo;best AI tools&rdquo; lists recycle vendor claims. We link every price and feature to its official source,
-              date it, and say clearly when a page is research-based rather than hands-on tested.
+              Plenty of &ldquo;best AI tools&rdquo; lists repeat vendor claims and hand out star ratings nobody earned. We link
+              each price to the page we took it from, and if we haven&apos;t used a tool ourselves, the review says so at the top.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/how-we-review/" className="rounded-full bg-label px-6 py-3 font-bold text-ink transition hover:brightness-95">
@@ -286,8 +286,8 @@ export default async function Home() {
         <div className={container}>
           <SectionHead
             eyebrow="AI tools directory"
-            title="Find the right AI tool, fast"
-            text="Writing, coding, video, automation and more — with transparent verification dates and no invented ratings."
+            title="Browse AI tools by task"
+            text="Ten categories, from writing and coding to voice, video and automation."
             link={{ href: "/ai-tools/", label: "Browse all AI tools" }}
           />
           <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
@@ -317,8 +317,8 @@ export default async function Home() {
         <div className={container}>
           <SectionHead
             eyebrow="SaaS reviews"
-            title="Business software, and the AI inside it"
-            text="CRMs, project tools, email platforms and more — reviewed with the same no-fake-scores rules."
+            title="Business software"
+            text="CRM, project management, email marketing, analytics and support tools."
             link={{ href: "/saas/", label: "All SaaS categories" }}
           />
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -351,8 +351,8 @@ export default async function Home() {
           <div className={container}>
             <SectionHead
               eyebrow="Compare"
-              title="Side-by-side, no paid winners"
-              text="Transparent criteria and factual differences, so you can decide for your situation."
+              title="Head-to-head comparisons"
+              text="Two or three tools, the same questions, and a plain answer on which suits whom."
               link={{ href: "/compare/", label: "All comparisons" }}
             />
             <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -370,14 +370,14 @@ export default async function Home() {
       )}
 
       {/* ---------- CTA band ---------- */}
-      <section className="pb-4 pt-4">
+      <section className="pb-16 pt-4">
         <div className={container}>
           <div className="relative overflow-hidden rounded-3xl bg-label px-6 py-12 text-ink sm:px-12">
             <div aria-hidden className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-white/30 blur-2xl" />
             <div className="relative grid items-center gap-8 lg:grid-cols-[1fr_1fr]">
               <div>
                 <h2 className="font-serif text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">Not sure which AI tool fits?</h2>
-                <p className="mt-3 max-w-lg text-ink/80">Search by tool name, task or category — or start from a category and compare side by side.</p>
+                <p className="mt-3 max-w-lg text-ink/80">Type a tool name or a task, like &ldquo;meeting notes&rdquo; or &ldquo;email newsletters&rdquo;.</p>
               </div>
               <div className="space-y-3">
                 <SearchForm />

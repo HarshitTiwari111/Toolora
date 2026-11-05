@@ -221,9 +221,9 @@
         }
       ],
       "bodyFile": "articles/otter-ai-review.html",
-      "coverImageUrl": "/images/articles/otter-ai-review-cover.jpg",
-      "coverImageAlt": "Illustration of a video meeting turning into an AI meeting summary with action items",
-      "coverImageCredit": "Illustration: Toolora.ai"
+      "coverImageUrl": "https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?auto=format&fit=crop&w=1600&h=900&q=80",
+      "coverImageAlt": "Laptop showing a video meeting with several participants",
+      "coverImageCredit": "Photo: Chris Montgomery on Unsplash"
     },
     {
       "topicKeyword": "trello review",
@@ -278,9 +278,9 @@
         }
       ],
       "bodyFile": "articles/trello-review.html",
-      "coverImageUrl": "/images/articles/trello-review-cover.jpg",
-      "coverImageAlt": "Illustration of a Trello-style board with To do, Doing and Done lists, plus automation and Power-Ups",
-      "coverImageCredit": "Illustration: Toolora.ai"
+      "coverImageUrl": "https://images.unsplash.com/photo-1553044020-8c90843adf96?auto=format&fit=crop&w=1600&h=900&q=80",
+      "coverImageAlt": "Yellow sticky notes and a marker for planning tasks",
+      "coverImageCredit": "Photo: Kelly Sikkema on Unsplash"
     }
   ]
 }

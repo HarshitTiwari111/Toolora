@@ -16,7 +16,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   // Filter wale URLs index na hon; canonical hamesha /blog/.
   return pageMetadata({
     title: "Blog: AI tool reviews, comparisons and guides",
-    description: "Fact-checked reviews, comparisons, alternatives and guides on AI tools and SaaS — every claim sourced and dated.",
+    description: "Reviews, comparisons, alternatives and how-to guides for AI tools and business software.",
     path: "/blog/",
     noindex: Boolean(sp.category || sp.type),
   });

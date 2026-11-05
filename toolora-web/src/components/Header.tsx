@@ -15,8 +15,8 @@ export default function Header() {
       <div className="bg-accent text-white">
         <p className="mx-auto flex max-w-[1600px] items-center justify-center gap-2 px-4 py-2 text-center text-xs font-medium sm:text-sm">
           <ShieldCheck className="hidden h-4 w-4 sm:block" />
-          <span className="sm:hidden">Every fact sourced &amp; dated.</span>
-          <span className="hidden sm:inline">Every price and feature on Toolora links to its source — with the date we checked it.</span>
+          <span className="sm:hidden">Prices checked on official sites.</span>
+          <span className="hidden sm:inline">We copy prices from official pricing pages and show the date we checked.</span>
           <Link href="/how-we-review/" className="rounded-md bg-label px-2 py-0.5 font-semibold text-ink">
             How we review
           </Link>

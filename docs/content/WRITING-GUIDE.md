@@ -21,6 +21,26 @@ Every article on Toolora.ai follows these rules, whether a person writes it or t
 - Show the currency, plan name, billing period and check date for every price.
 - Don't rewrite vendor copy. Add useful guidance: who the tool fits, who it doesn't, and what to check before buying.
 
+## Sound like a person, not a template (unslop rules)
+
+Readers and Google both notice when every page reads the same. Check each draft against this list before saving.
+
+**Banned words and habits**
+- No em dashes (—). Use a full stop, a comma or brackets.
+- No stock AI phrases: "dive into", "delve", "in today's fast-paced world", "whether you're a … or a …", "look no further", "unlock", "elevate", "seamless", "robust", "game-changer", "cutting-edge", "navigate", "landscape", "leverage", "empower", "it's worth noting", "in conclusion".
+- Don't repeat the site's promise ("sourced, dated, no fake scores") inside articles. The page template already says it once.
+- No "On paper," and no rule-of-three lists written only for rhythm.
+
+**Vary the shape**
+- Don't copy another article's headings. Only "pricing", "free plan" and "pros and cons" sections are standard; name the rest after the real question ("Is Otter.ai worth paying for?", "Which Trello plan should you pick?").
+- Open with the reader's situation or the tool's one-line job, not "X is a … tool that … This review covers …".
+- Mix short and long sentences. Some paragraphs can be one line.
+- End with a recommendation a reader can act on (which plan, for whom), not a summary of the article.
+
+**Be specific**
+- Prefer numbers and examples ("$8.33 a month instead of $16.99", "a rule that ticks the checklist when a card hits Done") over adjectives.
+- Only claim what a source says. If you add a fact from memory (launch year, owner, user counts), find the source or delete it.
+
 ## SEO checklist
 
 1. **Primary keyword** (for example "Otter.ai review") goes in the title, the first paragraph, at least one H2 and the meta title.
@@ -69,6 +89,8 @@ using ONLY the approved brief and source records below.
 Rules:
 - Max 1,500 words of body (target 1,100–1,400). FAQ separate: 3–5 questions, 1–3 sentences each.
 - Never add facts that are not in the sources. If sources conflict or are unclear, say so plainly.
+- Follow the "Sound like a person" rules: no em dashes, none of the banned phrases, headings named after real
+  questions, an opening about the reader's situation, and a closing recommendation (which plan, for whom).
 - Do not claim hands-on testing. No scores or star ratings. Show currency, plan, billing period and
   "checked on [date]" for every price.
 - SEO: put the primary keyword "[keyword]" in the first paragraph, one H2 and the meta title.

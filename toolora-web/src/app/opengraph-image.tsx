@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 // Default social share image (WhatsApp, LinkedIn, X). Article pages apni cover image use karti hain.
-export const alt = "Toolora.ai — AI tools reviews, comparisons and guides";
+export const alt = "Toolora.ai: AI tool reviews, comparisons and guides";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -33,7 +33,7 @@ export default function OgImage() {
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
           <div style={{ fontSize: 68, fontWeight: 800, lineHeight: 1.1, maxWidth: 980 }}>
-            Find the right AI tool — with facts you can check.
+            Pick the AI tool that fits the job.
           </div>
           <div style={{ fontSize: 30, color: "#a5abc0" }}>Reviews · Comparisons · Alternatives · Guides</div>
         </div>

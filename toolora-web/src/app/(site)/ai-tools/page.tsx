@@ -7,7 +7,7 @@ type Props = { searchParams: Promise<{ pricing?: string; platform?: string; useC
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
   const sp = await searchParams;
   const filtered = Boolean(sp.pricing || sp.platform || sp.useCase);
-  return pageMetadata({ title: "AI tools directory", description: "Browse AI tools by category, pricing, platform and use case — with sourced, dated facts.", path: "/ai-tools/", noindex: filtered });
+  return pageMetadata({ title: "AI tools directory", description: "Browse AI tools by category, pricing, platform and use case.", path: "/ai-tools/", noindex: filtered });
 }
 
 export default async function Page({ searchParams }: Props) {

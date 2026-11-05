@@ -12,7 +12,7 @@ const fraunces = Fraunces({ variable: "--font-fraunces", subsets: ["latin"], wei
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${siteConfig.name} — AI tools reviews, comparisons and alternatives`,
+    default: `${siteConfig.name}: AI tool reviews, comparisons and alternatives`,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,

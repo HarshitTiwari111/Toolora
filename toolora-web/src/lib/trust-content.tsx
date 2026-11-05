@@ -13,7 +13,7 @@ export const trustContent: Record<string, TrustContent> = {
         <p>
           Toolora.ai is an editorial site for discovering AI tools and business software. We publish product profiles,
           reviews, head-to-head comparisons, alternatives and practical guides, so you can decide which tool fits your
-          work — and which one doesn&apos;t.
+          work, and which one doesn&apos;t.
         </p>
         <h2>What makes our pages different</h2>
         <ul>
@@ -37,7 +37,7 @@ export const trustContent: Record<string, TrustContent> = {
       <>
         <h2>Sources</h2>
         <p>
-          Product facts — pricing, plans, features, platforms and availability — come from the vendor&apos;s own pages,
+          Product facts (pricing, plans, features, platforms and availability) come from the vendor&apos;s own pages,
           documentation, pricing page or changelog. We store the source URL and the date we checked it. If we cannot find
           a source, we leave the claim out or mark it for verification.
         </p>
@@ -122,7 +122,7 @@ export const trustContent: Record<string, TrustContent> = {
       <>
         <p>
           We work to keep every fact accurate and dated, but products change quickly. If you spot something wrong or out
-          of date — a price, a feature, a broken link — please tell us.
+          of date, such as a price, a feature or a broken link, please tell us.
         </p>
         <h2>What happens next</h2>
         <ul>

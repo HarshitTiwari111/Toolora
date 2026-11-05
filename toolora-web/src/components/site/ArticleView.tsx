@@ -6,6 +6,7 @@ import { areaBase, articleCategory, articleTypeLabels, categoryName, fmtDate, in
 import Breadcrumbs, { type Crumb } from "../Breadcrumbs";
 import ArticleCard, { Cover, NumberedList } from "./ArticleCard";
 import BrandMark from "./BrandMark";
+import { categoryPhoto, photoCredit } from "@/lib/photos";
 // Reference jaisa: header, cover, body aur sidebar ek hi centered column me.
 const wrap = "mx-auto w-full max-w-[1228px] px-4 sm:px-6";
 
@@ -66,6 +67,44 @@ function CompareTable({ products }: { products: PublicProduct[] }) {
         </tbody>
       </table>
     </div>
+  );
+}
+
+// Cover ke neeche photo credit (Unsplash license: photographer + Unsplash ka naam).
+function CoverCredit({ article: a }: { article: PublicArticle }) {
+  const link = "underline underline-offset-2 hover:text-foreground";
+  if (a.coverImageUrl) {
+    if (!a.coverImageCredit) return null;
+    const m = a.coverImageCredit.match(/^(.*?)\s+on Unsplash$/i);
+    return (
+      <figcaption className="mt-2 text-right text-xs text-muted">
+        {m ? (
+          <>
+            {m[1]} on{" "}
+            <a href="https://unsplash.com/?utm_source=toolora&utm_medium=referral" target="_blank" rel="noopener noreferrer" className={link}>
+              Unsplash
+            </a>
+          </>
+        ) : (
+          a.coverImageCredit
+        )}
+      </figcaption>
+    );
+  }
+  const photo = categoryPhoto(articleCategory(a)?.slug);
+  if (!photo) return null;
+  const c = photoCredit(photo);
+  return (
+    <figcaption className="mt-2 text-right text-xs text-muted">
+      Photo:{" "}
+      <a href={c.authorUrl} target="_blank" rel="noopener noreferrer" className={link}>
+        {c.author}
+      </a>{" "}
+      on{" "}
+      <a href={c.unsplashUrl} target="_blank" rel="noopener noreferrer" className={link}>
+        Unsplash
+      </a>
+    </figcaption>
   );
 }
 
@@ -193,7 +232,7 @@ export default function ArticleView({
       {/* ---------- Cover ---------- */}
       <figure className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
         <Cover article={a} className="aspect-[16/9] rounded-2xl" sizes="(min-width: 1024px) 976px, 100vw" priority big />
-        {a.coverImageUrl && a.coverImageCredit && <figcaption className="mt-2 text-right text-xs text-muted">{a.coverImageCredit}</figcaption>}
+        <CoverCredit article={a} />
       </figure>
 
       {/* ---------- Body + sidebar ---------- */}
@@ -255,8 +294,8 @@ export default function ArticleView({
               <h2 className="mb-2 font-bold">How we made this guide</h2>
               <p className="text-muted">
                 {handsOn
-                  ? "Our team used this product and combined that experience with the official documentation listed above."
-                  : "Research-based overview built from official product pages and documentation. We did not test the product hands-on and do not assign ratings."}
+                  ? "We used this product ourselves and checked the details against the sources above."
+                  : "We wrote this from the official pages listed above. We haven't used the product ourselves, so there's no score."}
               </p>
               <p className="mt-2">
                 <span className="font-semibold">Last reviewed:</span> {updated ?? published}
@@ -289,8 +328,8 @@ export default function ArticleView({
                 <p className="font-bold">{author}</p>
                 <p className="text-muted">{a.author ? "Author" : "Editors & researchers"}</p>
                 <p className="mt-2 text-muted">
-                  Our editorial team researches and fact-checks every article against official sources. Pages are reviewed by an editor
-                  before publishing and re-checked on a schedule.
+                  Written by the Toolora team. An editor checks the facts before a page goes live, and we come back to it when
+                  prices change.
                 </p>
               </div>
             </section>

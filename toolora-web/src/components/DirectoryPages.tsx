@@ -110,9 +110,9 @@ function FilterSidebar({ basePath, data }: { basePath: string; data: Loaded }) {
           <ShieldCheck className="h-4 w-4 text-accent" /> How we list tools
         </p>
         <ul className="space-y-2 text-sm text-muted">
-          <li className="flex gap-2"><span className="text-emerald-600">&#10003;</span> Facts from official pages only</li>
-          <li className="flex gap-2"><span className="text-emerald-600">&#10003;</span> Every fact has a check date</li>
-          <li className="flex gap-2"><span className="text-emerald-600">&#10003;</span> No paid rankings or made-up scores</li>
+          <li className="flex gap-2"><span className="text-emerald-600">&#10003;</span> Prices from each vendor&apos;s own site</li>
+          <li className="flex gap-2"><span className="text-emerald-600">&#10003;</span> Re-checked when plans change</li>
+          <li className="flex gap-2"><span className="text-emerald-600">&#10003;</span> Nobody pays to be listed higher</li>
         </ul>
         <Link href="/how-we-review/" className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-accent hover:underline">
           Our method <ArrowRight className="h-3.5 w-3.5" />
@@ -223,7 +223,7 @@ async function CategoryHub({ area, slug, filters: raw }: { area: Area; slug: str
         crumbs={[{ label: a.label, href: `${areaBase(area)}/` }, { label: cat.name }]}
         eyebrow="Category"
         title={`Best ${cat.name} tools`}
-        description={`${cat.description}, compared on pricing model, platforms and verified features — with the date each fact was checked.`}
+        description={`${cat.description}: what they cost, where they run and who each one is for.`}
         icon={slug}
       >
         <div className="mt-6 flex flex-wrap gap-2.5 text-sm">
@@ -235,7 +235,7 @@ async function CategoryHub({ area, slug, filters: raw }: { area: Area; slug: str
             <span className="text-ink-muted">article{articles.length === 1 ? "" : "s"}</span>
           </span>
           <span className={`${pill} text-ink-muted`}>
-            <CalendarCheck className="h-4 w-4 text-emerald-400" /> Sourced, dated facts
+            <CalendarCheck className="h-4 w-4 text-emerald-400" /> Prices from official sites
           </span>
         </div>
       </PageHeader>
@@ -270,7 +270,7 @@ async function CategoryHub({ area, slug, filters: raw }: { area: Area; slug: str
           {data.all.length > 0 && data.all.length < 4 && !filtered && (
             <p className="mt-4 flex items-start gap-2.5 rounded-xl border border-dashed border-line px-4 py-3 text-sm text-muted">
               <Info className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-              More {cat.name} tools are being researched. We add each one only after checking its official pages.
+              More {cat.name} tools are coming soon.
             </p>
           )}
 
@@ -318,7 +318,7 @@ function OutboundCta({ p }: { p: ProductDetail }) {
       </a>
       {affiliate && (
         <p className="text-xs text-muted">
-          Affiliate link — we may earn a commission.{" "}
+          Affiliate link: we may earn a commission.{" "}
           <Link href="/affiliate-disclosure/" className="underline underline-offset-2">
             Disclosure
           </Link>

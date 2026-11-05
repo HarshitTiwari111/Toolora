@@ -86,6 +86,12 @@ automationRouter.post("/images", async (req, res) => {
   res.status(201).json({ id: String(img._id), url: `/media/${img._id}/${name}`, size: data.length });
 });
 
+const SLOP_PHRASES = [
+  "dive into", "delve", "in today's fast-paced", "look no further", "unlock", "elevate", "seamless", "robust",
+  "game-changer", "game changer", "cutting-edge", "navigate the", "landscape", "leverage", "empower",
+  "it's worth noting", "in conclusion", "on paper",
+];
+
 // Draft bhejne se pehle check: words, internal links (sirf live pages), meta, sources.
 const checkSchema = z.object({
   title: z.string().default(""),
@@ -114,6 +120,12 @@ automationRouter.post("/articles/check", async (req, res) => {
   }
   const words = articleWordCount(a.body);
   if (words < 700) issues.push(`Body is only ${words} words; aim for 1,100-1,400 (max ${MAX_ARTICLE_WORDS})`);
+  // Unslop rules (docs/content/WRITING-GUIDE.md): AI jaisi ratti hui writing pakdo.
+  const text = a.body.replace(/<[^>]+>/g, " ");
+  const dashes = (text.match(/—/g) ?? []).length;
+  if (dashes) issues.push(`Remove ${dashes} em dash(es) (—); use a full stop, comma or brackets`);
+  const stock = SLOP_PHRASES.filter((w) => new RegExp(`\\b${w}\\b`, "i").test(text));
+  if (stock.length) issues.push(`Rewrite stock AI phrases: ${stock.join(", ")}`);
   if (/<h1[\s>]/i.test(a.body)) issues.push("Body must not contain an H1 (the title is the H1)");
   if (a.faq.length < 3) issues.push("Add 3-5 FAQ items");
   const imgs = [...a.body.matchAll(/<img\s[^>]*>/gi)].map((m) => m[0]);
