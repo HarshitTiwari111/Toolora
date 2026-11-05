@@ -16,6 +16,7 @@ export async function SectionItemPage({ section, slug }: { section: SectionKey; 
     await listArticles(article.category ? { category: article.category, limit: 8 } : { articleType: s.articleType, productType: s.productType, limit: 8 })
   ).items;
   const related = pool.filter((r) => r._id !== article._id).slice(0, 3);
+  const latest = (await listArticles({ limit: 6 })).items;
 
   const cat = articleCategory(article);
   const crumbs = cat ? [{ name: cat.name, path: cat.href }] : [{ name: s.label, path: `/${section}/` }];
@@ -38,7 +39,7 @@ export async function SectionItemPage({ section, slug }: { section: SectionKey; 
           breadcrumbJsonLd([...crumbs, { name: article.title, path: article.url }]),
         ]}
       />
-      <ArticleView article={article} sectionLabel={s.label} sectionHref={`/${section}/`} pageType={s.pageType} related={related} />
+      <ArticleView article={article} sectionLabel={s.label} sectionHref={`/${section}/`} pageType={s.pageType} related={related} latest={latest} />
     </>
   );
 }

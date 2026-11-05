@@ -216,8 +216,9 @@ async function seed() {
   const guideBody = (topic: string) => `
 <h2>Who this guide is for</h2>
 <p>DEMO content about ${topic}. Replace with a real, sourced guide before launch.</p>
+<blockquote>Start with the job you need done, not the tool with the loudest launch.</blockquote>
 <h2>What to look for</h2>
-<ul><li>Clear pricing on the official site</li><li>Export and data ownership</li><li>Team features you actually need</li></ul>
+<ul><li><strong>Clear pricing</strong> on the official site</li><li>Export and data ownership</li><li>Team features you actually need</li></ul>
 <h2>How to compare options</h2>
 <p>Shortlist two or three tools, check each one's official pricing page, and note the date you checked.</p>
 <h2>Common mistakes</h2>
@@ -232,6 +233,10 @@ async function seed() {
       metaTitle: "How to Choose an AI Writing Tool (Demo)", metaDescription: "DEMO guide: checklist for choosing an AI writing tool.",
       author: "Demo Author", reviewer: "Demo Editor", disclosure,
       sources: [{ url: "https://example.com/demowrite/pricing", title: "DemoWrite pricing", checkedAt: daysAgo(3) }],
+      faq: [
+        { question: "Do I need a paid plan? (demo)", answer: "DEMO: check the free plan limits on the official pricing page first." },
+        { question: "Can I export my drafts? (demo)", answer: "DEMO: confirm export options in the vendor documentation." },
+      ],
       status: "published", publishedAt: daysAgo(1),
     },
     {

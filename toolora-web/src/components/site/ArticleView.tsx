@@ -1,13 +1,12 @@
 import Link from "next/link";
-import { BadgeCheck, CalendarCheck, Clock, ExternalLink, FlaskConical, Info, Link2, UserCheck } from "lucide-react";
+import { BadgeCheck, ExternalLink, FlaskConical, Info } from "lucide-react";
 import type { ArticleSummary, PublicArticle, PublicProduct } from "@/lib/content";
 import { cleanArticleHtml, withHeadingIds } from "@/lib/sanitize";
-import { areaBase, articleCategory, categoryName, fmtDate, platformName, pricingLabels, readingMinutes } from "@/lib/labels";
+import { areaBase, articleCategory, articleTypeLabels, categoryName, fmtDate, initials, platformName, pricingLabels, readingMinutes } from "@/lib/labels";
 import Breadcrumbs, { type Crumb } from "../Breadcrumbs";
-import ArticleCard, { Cover } from "./ArticleCard";
+import ArticleCard, { Cover, NumberedList } from "./ArticleCard";
 import BrandMark from "./BrandMark";
-// Article ka header, cover aur body ek hi width me aligned (reference jaisa).
-const wrap = "mx-auto w-full max-w-[1240px] px-4 sm:px-6 lg:px-10";
+import { container } from "./PageHeader";
 
 const profileUrl = (p: PublicProduct) => p.url ?? `${areaBase(p.productType)}/${p.slug}/`;
 
@@ -74,12 +73,14 @@ export default function ArticleView({
   sectionLabel,
   sectionHref,
   related,
+  latest,
 }: {
   article: PublicArticle;
   sectionLabel: string;
   sectionHref: string;
   pageType: string;
   related: ArticleSummary[];
+  latest: ArticleSummary[];
 }) {
   const products = a.products.filter(Boolean);
   const { html, toc } = withHeadingIds(cleanArticleHtml(a.body));
@@ -88,11 +89,14 @@ export default function ArticleView({
   const published = fmtDate(a.publishedAt);
   const minutes = readingMinutes(a.body);
   const cat = articleCategory(a);
+  const author = a.author || "Toolora Editorial Team";
 
-  // Breadcrumb: Home / Category (ya Section) / Title
-  const crumbs: Crumb[] = cat
-    ? [{ label: cat.name, href: cat.href }, { label: a.title }]
-    : [{ label: sectionLabel, href: sectionHref }, { label: a.title }];
+  // Breadcrumb: Home / Section / Category / Title (reference jaisa)
+  const crumbs: Crumb[] = [
+    { label: sectionLabel, href: sectionHref },
+    ...(cat ? [{ label: cat.name, href: cat.href }] : []),
+    { label: a.title },
+  ];
 
   // Category hubs (PDF section 8: review se category hub tak contextual link).
   const hubs = [
@@ -108,63 +112,54 @@ export default function ArticleView({
       ],
     ).values(),
   ];
+  const latestOthers = latest.filter((x) => x._id !== a._id).slice(0, 5);
+  const tags = [cat?.name, articleTypeLabels[a.articleType], ...products.map((p) => p.brandName)].filter(Boolean) as string[];
 
   return (
     <article>
-      <header className="bg-surface">
-        <div className={`${wrap} pb-10 pt-8`}>
-          <div className="max-w-4xl">
+      {/* ---------- Header (centered, reference jaisa) ---------- */}
+      <header className="border-b border-line bg-surface">
+        <div className="mx-auto max-w-4xl px-4 pb-10 pt-8 sm:px-6">
           <Breadcrumbs items={crumbs} />
-          <p className="mb-3 text-xs font-bold uppercase tracking-widest text-accent">
-            {cat ? cat.name : sectionLabel}
-          </p>
-          <h1 className="font-serif text-3xl font-bold leading-[1.12] tracking-tight sm:text-5xl">{a.title}</h1>
+          <p className="mb-3 text-xs font-bold uppercase tracking-widest text-accent">{cat ? cat.name : sectionLabel}</p>
+          <h1 className="font-serif text-[2.1rem] font-semibold leading-[1.12] tracking-tight sm:text-5xl">{a.title}</h1>
           {a.excerpt && <p className="mt-4 text-lg leading-relaxed text-muted">{a.excerpt}</p>}
-          <ul className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted">
-            <li>
-              By <span className="font-semibold text-foreground">{a.author || "Toolora Editorial Team"}</span>
-            </li>
-            {a.reviewer && (
-              <li className="inline-flex items-center gap-1.5">
-                <UserCheck className="h-4 w-4" /> Reviewed by <span className="font-semibold text-foreground">{a.reviewer}</span>
-              </li>
-            )}
-            {(updated || published) && (
-              <li className="inline-flex items-center gap-1.5">
-                <CalendarCheck className="h-4 w-4" />
-                {updated ? (
-                  <>
-                    Updated <time dateTime={a.updatedAt}>{updated}</time>
-                  </>
-                ) : (
-                  <>Published {published}</>
-                )}
-              </li>
-            )}
-            <li className="inline-flex items-center gap-1.5">
-              <Clock className="h-4 w-4" /> {minutes} min read
-            </li>
-            <li className="inline-flex items-center gap-1.5">
-              {handsOn ? <FlaskConical className="h-4 w-4" /> : <BadgeCheck className="h-4 w-4" />}
-              {handsOn ? "Hands-on tested" : "Research-based overview"}
-            </li>
-          </ul>
-          </div>
+          <p className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
+            <span>
+              By <span className="font-semibold text-foreground">{author}</span>
+            </span>
+            <span aria-hidden>·</span>
+            <span>
+              {updated ? (
+                <>
+                  Updated <time dateTime={a.updatedAt}>{updated}</time>
+                </>
+              ) : (
+                <>Published {published}</>
+              )}
+            </span>
+            <span aria-hidden>·</span>
+            <span>{minutes} min read</span>
+            <span aria-hidden>·</span>
+            <span className="inline-flex items-center gap-1">
+              {handsOn ? <FlaskConical className="h-3.5 w-3.5" /> : <BadgeCheck className="h-3.5 w-3.5" />}
+              {handsOn ? "Hands-on tested" : "Research-based"}
+            </span>
+          </p>
         </div>
       </header>
 
-      {/* Cover: photo ho to photo, warna category ka illustrated cover */}
-      <div className="bg-gradient-to-b from-surface from-50% to-transparent to-50%">
-        <figure className={wrap}>
-          <Cover article={a} className="aspect-[16/9] rounded-3xl shadow-card sm:aspect-[21/9]" sizes="(min-width: 1240px) 1200px, 100vw" priority big />
-          {a.coverImageUrl && a.coverImageCredit && <figcaption className="mt-2 text-right text-xs text-muted">{a.coverImageCredit}</figcaption>}
-        </figure>
-      </div>
+      {/* ---------- Cover ---------- */}
+      <figure className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
+        <Cover article={a} className="aspect-[16/9] rounded-2xl" sizes="(min-width: 1024px) 976px, 100vw" priority big />
+        {a.coverImageUrl && a.coverImageCredit && <figcaption className="mt-2 text-right text-xs text-muted">{a.coverImageCredit}</figcaption>}
+      </figure>
 
-      <div className={`${wrap} grid gap-12 py-12 lg:grid-cols-[minmax(0,1fr)_300px]`}>
+      {/* ---------- Body + sidebar ---------- */}
+      <div className={`${container} grid gap-10 py-10 lg:grid-cols-[minmax(0,1fr)_300px] xl:gap-14`}>
         <div className="min-w-0">
           {a.disclosure && (
-            <p className="mb-8 flex max-w-[75ch] gap-3 rounded-2xl border border-line bg-surface p-4 text-sm text-muted">
+            <p className="mb-8 flex max-w-[840px] gap-2.5 rounded-xl border border-line bg-surface px-4 py-3 text-sm text-muted">
               <Info className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
               <span>
                 {a.disclosure}{" "}
@@ -173,65 +168,100 @@ export default function ArticleView({
             </p>
           )}
 
-          {a.articleType === "compare" && products.length >= 2 && <CompareTable products={products} />}
+          {a.articleType === "compare" && products.length >= 2 && (
+            <div className="max-w-[840px]">
+              <CompareTable products={products} />
+            </div>
+          )}
 
           <div className="article-body" dangerouslySetInnerHTML={{ __html: html }} />
 
-          {a.faq.length > 0 && (
-            <section className="mt-12 max-w-[75ch]">
-              <h2 className="mb-4 font-serif text-2xl font-bold tracking-tight">FAQ</h2>
-              <div className="space-y-3">
-                {a.faq.map((f) => (
-                  <details key={f.question} className="rounded-2xl border border-line bg-surface p-5 shadow-card">
-                    <summary className="cursor-pointer list-none font-semibold [&::-webkit-details-marker]:hidden">{f.question}</summary>
-                    <p className="mt-3 text-muted">{f.answer}</p>
-                  </details>
+          <div className="max-w-[840px]">
+            {a.faq.length > 0 && (
+              <section className="mt-14">
+                <h2 className="mb-4 font-serif text-2xl font-semibold tracking-tight">Frequently asked questions</h2>
+                <div className="divide-y divide-line overflow-hidden rounded-2xl border border-line bg-surface">
+                  {a.faq.map((f) => (
+                    <details key={f.question} className="group px-5 py-4">
+                      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold [&::-webkit-details-marker]:hidden">
+                        {f.question}
+                        <span aria-hidden className="text-xl leading-none text-accent transition group-open:rotate-45">+</span>
+                      </summary>
+                      <p className="mt-3 text-muted">{f.answer}</p>
+                    </details>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            <section className="mt-12">
+              <h2 className="mb-3 font-serif text-2xl font-semibold tracking-tight">Sources &amp; references</h2>
+              <ol className="list-decimal space-y-1.5 pl-5 text-sm">
+                {a.sources.map((s, i) => (
+                  <li key={s.url + i}>
+                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="break-all text-accent underline underline-offset-2 hover:no-underline">
+                      {s.title || s.url}
+                    </a>
+                    {s.checkedAt && <span className="text-muted"> (accessed {fmtDate(s.checkedAt)})</span>}
+                  </li>
                 ))}
+              </ol>
+            </section>
+
+            <section className="mt-8 rounded-2xl border border-line bg-surface p-5 text-sm">
+              <h2 className="mb-2 font-bold">How we made this guide</h2>
+              <p className="text-muted">
+                {handsOn
+                  ? "Our team used this product and combined that experience with the official documentation listed above."
+                  : "Research-based overview built from official product pages and documentation. We did not test the product hands-on and do not assign ratings."}
+              </p>
+              <p className="mt-2">
+                <span className="font-semibold">Last reviewed:</span> {updated ?? published}
+                {a.reviewer && (
+                  <>
+                    {" "}· <span className="font-semibold">Reviewed by:</span> {a.reviewer}
+                  </>
+                )}
+              </p>
+              <p className="mt-1 text-muted">
+                Spotted an error?{" "}
+                <Link href="/corrections/" className="text-accent underline underline-offset-2">Request a correction</Link>.{" "}
+                <Link href="/how-we-review/" className="text-accent underline underline-offset-2">How we review</Link>
+              </p>
+            </section>
+
+            {tags.length > 0 && (
+              <ul className="mt-6 flex flex-wrap gap-2">
+                {tags.map((t) => (
+                  <li key={t} className="rounded-full border border-line bg-surface px-3 py-1 text-xs font-medium">#{t.replace(/\s+/g, "")}</li>
+                ))}
+              </ul>
+            )}
+
+            <section className="mt-8 flex gap-4 rounded-2xl border border-line bg-surface p-5">
+              <span aria-hidden className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-label font-bold text-ink">
+                {initials(author)}
+              </span>
+              <div className="text-sm">
+                <p className="font-bold">{author}</p>
+                <p className="text-muted">{a.author ? "Author" : "Editors & researchers"}</p>
+                <p className="mt-2 text-muted">
+                  Our editorial team researches and fact-checks every article against official sources. Pages are reviewed by an editor
+                  before publishing and re-checked on a schedule.
+                </p>
               </div>
             </section>
-          )}
-
-          <section className="mt-12 max-w-[75ch] rounded-2xl border border-line bg-surface p-6 shadow-card">
-            <h2 className="mb-1 flex items-center gap-2 font-serif text-xl font-bold tracking-tight">
-              <Link2 className="h-5 w-5 text-accent" /> Sources
-            </h2>
-            <p className="mb-4 text-sm text-muted">Facts on this page were checked against these sources on the dates shown.</p>
-            <ol className="space-y-2 text-sm">
-              {a.sources.map((s, i) => (
-                <li key={s.url + i} className="flex flex-wrap items-baseline gap-x-2">
-                  <span className="text-muted">{i + 1}.</span>
-                  <a href={s.url} target="_blank" rel="noopener noreferrer" className="break-all text-accent hover:underline">
-                    {s.title || s.url}
-                  </a>
-                  {s.checkedAt && <span className="text-xs text-muted">checked {fmtDate(s.checkedAt)}</span>}
-                </li>
-              ))}
-            </ol>
-          </section>
-
-          <section className="mt-6 max-w-[75ch] rounded-2xl bg-surface-2 p-6 text-sm text-muted">
-            <h2 className="mb-2 font-semibold text-foreground">Methodology</h2>
-            <p>
-              {handsOn
-                ? "Our team used this product and combined that experience with the official documentation listed above."
-                : "This is a research-based overview built from official product pages and documentation. We did not test the product hands-on and do not assign ratings."}{" "}
-              {published && `First published ${published}.`} {updated && `Last updated ${updated}.`}
-            </p>
-            <p className="mt-2">
-              <Link href="/how-we-review/" className="text-accent hover:underline">How we review</Link> ·{" "}
-              <Link href="/corrections/" className="text-accent hover:underline">Report a correction</Link>
-            </p>
-          </section>
+          </div>
         </div>
 
         <aside className="space-y-6 lg:sticky lg:top-28 lg:self-start">
           {toc.length > 1 && (
-            <nav aria-label="On this page" className="rounded-2xl border border-line bg-surface p-5 shadow-card">
+            <nav aria-label="On this page" className="rounded-2xl border border-line bg-surface p-5">
               <h2 className="mb-3 text-xs font-extrabold uppercase tracking-widest">On this page</h2>
-              <ol className="space-y-1 text-sm">
+              <ol className="space-y-1.5 text-sm">
                 {toc.map((t) => (
                   <li key={t.id}>
-                    <a href={`#${t.id}`} className="block rounded-md px-2 py-1 text-muted transition hover:bg-surface-2 hover:text-accent">
+                    <a href={`#${t.id}`} className="block text-muted transition hover:text-accent">
                       {t.text}
                     </a>
                   </li>
@@ -240,8 +270,10 @@ export default function ArticleView({
             </nav>
           )}
 
+          {latestOthers.length > 0 && <NumberedList title="Latest articles" items={latestOthers} />}
+
           {products.length > 0 && (
-            <div className="rounded-2xl border border-line bg-surface p-5 shadow-card">
+            <div className="rounded-2xl border border-line bg-surface p-5">
               <h2 className="mb-4 text-xs font-extrabold uppercase tracking-widest">Tools in this article</h2>
               <ul className="space-y-4">
                 {products.map((p) => (
@@ -265,13 +297,13 @@ export default function ArticleView({
           )}
 
           {hubs.length > 0 && (
-            <div className="rounded-2xl border border-line bg-surface p-5 shadow-card">
+            <div className="rounded-2xl border border-line bg-surface p-5">
               <h2 className="mb-3 text-xs font-extrabold uppercase tracking-widest">Explore the category</h2>
               <ul className="space-y-1">
                 {hubs.map((h) => (
                   <li key={h.href}>
                     <Link href={h.href} className="flex items-center justify-between rounded-lg px-2.5 py-2 text-sm font-medium transition hover:bg-surface-2">
-                      All {h.name.toLowerCase()} tools <span aria-hidden className="text-accent">→</span>
+                      All {h.name} tools <span aria-hidden className="text-accent">→</span>
                     </Link>
                   </li>
                 ))}
@@ -283,8 +315,8 @@ export default function ArticleView({
 
       {related.length > 0 && (
         <section className="border-t border-line bg-surface py-14">
-          <div className={wrap}>
-            <h2 className="mb-8 font-serif text-3xl font-bold tracking-tight">Keep reading</h2>
+          <div className={container}>
+            <h2 className="mb-8 font-serif text-3xl font-semibold tracking-tight">Related guides</h2>
             <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {related.map((r) => (
                 <li key={r._id}>
