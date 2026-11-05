@@ -5,6 +5,8 @@ import { articlePath, productPath } from "../lib/content.js";
 import { Article } from "../models/Article.js";
 import { Product } from "../models/Product.js";
 import { SourceFact } from "../models/SourceFact.js";
+import { ImageAsset } from "../models/Image.js";
+import { siteInventory } from "../lib/inventory.js";
 
 // Website ke liye. Sirf ACTIVE products aur PUBLISHED articles. Drafts kabhi yahan se nahi niklenge.
 export const publicRouter = Router();
@@ -111,14 +113,20 @@ publicRouter.get("/search", async (req, res) => {
 
 // Sitemap + internal-link inventory (PDF section 8): sirf live canonical URLs.
 publicRouter.get("/inventory", async (_req, res) => {
-  const [products, articles] = await Promise.all([
-    Product.find({ status: "active" }).select("slug productType brandName updatedAt").lean(),
-    Article.find({ status: "published" }).select("slug productType articleType title updatedAt").lean(),
-  ]);
-  res.json({
-    items: [
-      ...products.map((p) => ({ url: productPath(p), title: p.brandName, kind: "product", updatedAt: p.updatedAt })),
-      ...articles.map((a) => ({ url: articlePath(a), title: a.title, kind: a.articleType, updatedAt: a.updatedAt })),
-    ],
+  res.json({ items: await siteInventory() });
+});
+
+// Uploaded article image (website /media/{id}/{name} se proxy karti hai). Images badalti nahi -> lamba cache.
+publicRouter.get("/images/:id", async (req, res) => {
+  if (!/^[a-f0-9]{24}$/i.test(req.params.id)) throw new HttpError(404, "Image not found");
+  const img = notFoundIfNull(await ImageAsset.findById(req.params.id).select("+data contentType").lean(), "Image");
+  res.set({
+    "Content-Type": img.contentType,
+    "Cache-Control": "public, max-age=31536000, immutable",
+    "X-Content-Type-Options": "nosniff",
+    "Cross-Origin-Resource-Policy": "cross-origin",
+    // SVG ko seedha kholne par bhi koi script na chale.
+    "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox",
   });
+  res.send(Buffer.from(img.data.buffer ?? img.data));
 });

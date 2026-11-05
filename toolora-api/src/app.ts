@@ -16,6 +16,8 @@ export function createApp() {
   app.use(helmet());
   // Sirf apne frontend ko allow karo. Server-to-server calls (Next.js, n8n) par CORS lagta hi nahi.
   app.use(cors({ origin: env.corsOrigins }));
+  // Image upload base64 hota hai (3 MB file ~ 4 MB JSON). Baaki sab 2 MB.
+  app.use("/api/automation/images", express.json({ limit: "5mb" }));
   app.use(express.json({ limit: "2mb" }));
 
   app.use("/api/health", healthRouter);

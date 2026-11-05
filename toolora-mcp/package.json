@@ -1,0 +1,17 @@
+{
+  "name": "toolora-mcp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MCP server: lets Claude Desktop research, check and save Toolora.ai article drafts (never publishes).",
+  "type": "module",
+  "main": "index.mjs",
+  "scripts": {
+    "start": "node index.mjs",
+    "test": "node test.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "sharp": "^0.35.5",
+    "zod": "^4.6.7"
+  }
+}
